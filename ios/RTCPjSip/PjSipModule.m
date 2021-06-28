@@ -14,8 +14,6 @@
 @synthesize bridge = _bridge;
 
 - (dispatch_queue_t)methodQueue {
-    // TODO: Use special thread may be ?
-    // return dispatch_queue_create("com.carusto.PJSipMdule", DISPATCH_QUEUE_SERIAL);
     return dispatch_get_main_queue();
 }
 

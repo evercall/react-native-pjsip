@@ -1,24 +1,20 @@
 import AccountRegistration from './AccountRegistration'
 
-/**
- * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
- */
 export type AccountConfiguration = {
     id: number,
-    uri: string | null,
-    name: string | null,
+    uri: string,
+    name: string,
     username: string,
-    domain: string,
+    domain: string | null,
     password: string,
-    proxy: string | null,
-    transport: string | null,
-    contactParams: string | null,
-    contactUriParams: string | null,
-    regServer: string | null,
-    regTimeout: string | null,
-    regContactParams: string | null,
-    regHeaders: Object | null,
-    regOnAdd: boolean | null
+    proxy: string,
+    transport: string,
+    contactParams: string,
+    contactUriParams: string,
+    regServer: string,
+    regTimeout: string,
+    regContactParams: string,
+    regHeaders: Object
 };
 
 /**
@@ -51,7 +47,6 @@ export default class Account {
 
     /**
      * Full name specified in Endpoint.createAccount().
-     * If this value has been set to null, then it will return "sip:" + this.getDomain
      * @returns {String}
      */
     getName(): string {
@@ -68,9 +63,9 @@ export default class Account {
 
     /**
      * Domain specified in Endpoint.createAccount().
-     * @returns {string}
+     * @returns {int|null}
      */
-    getDomain(): string {
+    getDomain(): string | null {
         return this._data.domain;
     }
 

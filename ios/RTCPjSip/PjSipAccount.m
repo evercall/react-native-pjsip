@@ -36,7 +36,11 @@
 
         pjsua_acc_config cfg;
         pjsua_acc_config_default(&cfg);
+        cfg.cred_info->realm = pj_str((char *) [@"*" UTF8String]);
         
+        cfg.allow_sdp_nat_rewrite = PJ_TRUE;
+        cfg.call_hold_type = PJSUA_CALL_HOLD_TYPE_RFC3264;
+        cfg.enable_rtcp_mux = PJ_TRUE;
         cfg.vid_in_auto_show = PJ_TRUE;
         cfg.vid_out_auto_transmit = PJ_TRUE;
         
@@ -56,10 +60,11 @@
 
             pjsip_cred_info cred;
             cred.scheme = pj_str("digest");
-            cred.realm = ![PjSipUtil isEmptyString:self.regServer] ? pj_str((char *) [self.regServer UTF8String]) : pj_str("*");
+            cred.realm = pj_str("*");
             cred.username = pj_str((char *) [self.username UTF8String]);
             cred.data = pj_str((char *) [self.password UTF8String]);
             cred.data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
+            // cred.data_type = PJSIP_CRED_DATA_DIGEST;
 
             cfg.cred_count = 1;
             cfg.cred_info[0] = cred;
@@ -95,6 +100,8 @@
             }
 
             cfg.register_on_acc_add = self.regOnAdd;
+            cfg.allow_sdp_nat_rewrite = PJ_FALSE;
+            cfg.ipv6_media_use = PJSUA_IPV6_DISABLED;
         }
         
         // Transport settings
@@ -104,17 +111,7 @@
                 cfg.proxy[0] = pj_str((char *) [[NSString stringWithFormat:@"%@", self.proxy] UTF8String]);
             }
 
-            cfg.transport_id = [[PjSipEndpoint instance] tcpTransportId];
-        
-            if (![PjSipUtil isEmptyString:self.transport] && ![self.transport isEqualToString:@"TCP"]) {
-                if ([self.transport isEqualToString:@"UDP"]) {
-                    cfg.transport_id = [[PjSipEndpoint instance] udpTransportId];
-                } else if ([self.transport isEqualToString:@"TLS"]) {
-                    cfg.transport_id = [[PjSipEndpoint instance] tlsTransportId];
-                } else {
-                    NSLog(@"Illegal \"%@\" transport (possible values are UDP, TCP or TLS) use TCP instead", self.transport);
-                }
-            }
+            cfg.transport_id = [[PjSipEndpoint instance] udpTransportId];
         }
         
         pjsua_acc_id account_id;
@@ -125,6 +122,8 @@
         }
 
         self.id = account_id;
+        
+        pjsua_acc_set_default(account_id);
     }
 
     return self;

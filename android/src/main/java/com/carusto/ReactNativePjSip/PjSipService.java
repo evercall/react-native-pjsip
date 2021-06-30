@@ -125,20 +125,20 @@ public class PjSipService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        // String channelId = "";
-        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        //     channelId = "com.joluz.joluzapp";
-        //     String channelName = "My Background Service";
-        //     NotificationChannel chan = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
-        //     chan.setLightColor(Color.BLUE);
-        //     chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        //     NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        //     service.createNotificationChannel(chan);
-        // }
-        // Notification notification = new NotificationCompat.Builder(this, channelId).setSmallIcon(R.drawable.ic_notif)
-        //         .setContentTitle("Reachify").setContentText("Online").build();
+        String channelId = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channelId = "dk.evercall";
+            String channelName = "evercall";
+            NotificationChannel chan = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            service.createNotificationChannel(chan);
+        }
+        Notification notification = new NotificationCompat.Builder(this, channelId).setSmallIcon(R.drawable.ic_notif)
+                .setContentTitle("evercall").build();
 
-        // startForeground(1337, notification);
+        startForeground(1337, notification);
     }
 
     public void onTaskRemoved(Intent rootIntent) {
@@ -590,7 +590,7 @@ public class PjSipService extends Service {
         AccountConfig cfg = new AccountConfig();
 
         // General settings
-        AuthCredInfo cred = new AuthCredInfo("Digest", configuration.getNomalizedRegServer(),
+        AuthCredInfo cred = new AuthCredInfo("Digest", "*",
                 configuration.getUsername(), 0, configuration.getPassword());
 
         String idUri = configuration.getIdUri();

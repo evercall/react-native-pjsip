@@ -109,35 +109,6 @@
         }
     }
     
-    // Add TCP transport.
-    {
-        pjsua_transport_config cfg;
-        pjsua_transport_config_default(&cfg);
-        pjsua_transport_id id;
-        
-        status = pjsua_transport_create(PJSIP_TRANSPORT_TCP, &cfg, &id);
-        
-        if (status != PJ_SUCCESS) {
-            NSLog(@"Error creating TCP transport");
-        } else {
-            self.tcpTransportId = id;
-        }
-    }
-    
-    // Add TLS transport.
-    {
-        pjsua_transport_config cfg;
-        pjsua_transport_config_default(&cfg);
-        pjsua_transport_id id;
-        
-        status = pjsua_transport_create(PJSIP_TRANSPORT_TLS, &cfg, &id);
-        
-        if (status != PJ_SUCCESS) {
-            NSLog(@"Error creating TLS transport");
-        } else {
-            self.tlsTransportId = id;
-        }
-    }
     
     // Initialization is done, now start pjsua
     status = pjsua_start();
@@ -199,11 +170,9 @@
 
 - (void)deleteAccount:(int) accountId {
     // TODO: Destroy function ?
-    if (self.accounts[@(accountId)] == nil) {
-        [NSException raise:@"Failed to delete account" format:@"Account with %@ id not found", @(accountId)];
+    if (self.accounts[@(accountId)] != nil) {
+        [self.accounts removeObjectForKey:@(accountId)];
     }
-
-    [self.accounts removeObjectForKey:@(accountId)];
 }
 
 - (PjSipAccount *) findAccount: (int) accountId {
@@ -403,6 +372,7 @@ static void onCallStateChanged(pjsua_call_id callId, pjsip_event *event) {
     
     pjsua_call_info callInfo;
     pjsua_call_get_info(callId, &callInfo);
+    
     
     PjSipCall* call = [endpoint findCall:callId];
     

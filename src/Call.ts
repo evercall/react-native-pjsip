@@ -6,33 +6,33 @@ export enum CallState {
     PJSIP_INV_STATE_CONNECTING = 'PJSIP_INV_STATE_CONNECTING',
     PJSIP_INV_STATE_CONFIRMED = 'PJSIP_INV_STATE_CONFIRMED',
     PJSIP_INV_STATE_DISCONNECTED = 'PJSIP_INV_STATE_DISCONNECTED',
-};
+}
 
 export type CallData = {
-    id: number
-    callId: string
-    accountId: number
-    localContact: string
-    localUri: string
-    remoteContact: string
-    remoteUri: string
-    state: CallState
-    stateText: string
-    held: boolean
-    muted: boolean
-    speaker: boolean
-    connectDuration: number
-    totalDuration: number
-    remoteOfferer: number
-    remoteAudioCount: number
-    remoteVideoCount: number
-    remoteNumber: string
-    remoteName: string
-    audioCount: number
-    videoCount: number
-    lastStatusCode: string
-    lastReason: string
-    media: string
+    id: number,
+    callId: string,
+    accountId: number,
+    localContact: string,
+    localUri: string,
+    remoteContact: string,
+    remoteUri: string,
+    state: CallState,
+    stateText: string,
+    held: boolean,
+    muted: boolean,
+    speaker: boolean,
+    connectDuration: number,
+    totalDuration: number,
+    remoteOfferer: number,
+    remoteAudioCount: number,
+    remoteVideoCount: number,
+    remoteNumber: string,
+    remoteName: string,
+    audioCount: number,
+    videoCount: number,
+    lastStatusCode: string,
+    lastReason: string,
+    media: string,
     provisionalMedia: string
 }
 
@@ -40,105 +40,129 @@ export type CallData = {
  * This class describes the information and current status of a call.
  */
 class Call {
-
     _id: number;
+
     _callId: string;
+
     _accountId: number;
+
     _localContact: string;
+
     _localUri: string;
+
     _remoteContact: string;
+
     _remoteUri: string;
+
     _state: CallState;
+
     _stateText: string;
+
     _held: boolean;
+
     _muted: boolean;
+
     _speaker: boolean;
+
     _connectDuration: number;
+
     _totalDuration: number;
+
     _remoteOfferer: number;
+
     _remoteAudioCount: number;
+
     _remoteVideoCount: number;
+
     _remoteNumber: string;
+
     _remoteName: string;
+
     _audioCount: number;
+
     _videoCount: number;
+
     _lastStatusCode: string;
+
     _lastReason: string;
+
     _media: string;
+
     _provisionalMedia: string;
+
     _constructionTime: number;
 
     constructor({
-            id,
-            callId,
-            accountId,
-            localContact,
-            localUri,
-            remoteContact,
-            remoteUri,
-            state,
-            stateText,
-            held,
-            muted,
-            speaker,
-            connectDuration,
-            totalDuration,
-            remoteOfferer,
-            remoteAudioCount,
-            remoteVideoCount,
-            audioCount,
-            videoCount,
-            lastStatusCode,
-            lastReason,
-            media,
-            provisionalMedia,
-        }: CallData) {
-        let remoteNumber = null;
-        let remoteName = null;
+      id,
+      callId,
+      accountId,
+      localContact,
+      localUri,
+      remoteContact,
+      remoteUri,
+      state,
+      stateText,
+      held,
+      muted,
+      speaker,
+      connectDuration,
+      totalDuration,
+      remoteOfferer,
+      remoteAudioCount,
+      remoteVideoCount,
+      audioCount,
+      videoCount,
+      lastStatusCode,
+      lastReason,
+      media,
+      provisionalMedia,
+    }: CallData) {
+      let remoteNumber = null
+      let remoteName = null
 
-        if (remoteUri) {
-            let match = remoteUri.match(/"([^"]+)" <sip:([^@]+)@/);
+      if (remoteUri) {
+        let match = remoteUri.match(/"([^"]+)" <sip:([^@]+)@/)
 
-            if (match) {
-                remoteName = match[1];
-                remoteNumber = match[2];
-            } else {
-                match = remoteUri.match(/sip:([^@]+)@/);
+        if (match) {
+          remoteName = match[1]
+          remoteNumber = match[2]
+        } else {
+          match = remoteUri.match(/sip:([^@]+)@/)
 
-                if (match) {
-                    remoteNumber = match[1];
-                }
-            }
+          if (match) {
+            remoteNumber = match[1]
+          }
         }
+      }
 
-        this._id = id;
-        this._callId = callId;
-        this._accountId = accountId;
-        this._localContact = localContact;
-        this._localUri = localUri;
-        this._remoteContact = remoteContact;
-        this._remoteUri = remoteUri;
-        this._state = state;
-        this._stateText = stateText;
-        this._held = held;
-        this._muted = muted;
-        this._speaker = speaker;
-        this._connectDuration = connectDuration;
-        this._totalDuration = totalDuration;
-        this._remoteOfferer = remoteOfferer;
-        this._remoteAudioCount = remoteAudioCount;
-        this._remoteVideoCount = remoteVideoCount;
-        this._remoteNumber = remoteNumber;
-        this._remoteName = remoteName;
-        this._audioCount = audioCount;
-        this._videoCount = videoCount;
-        this._lastStatusCode = lastStatusCode;
-        this._lastReason = lastReason;
+      this._id = id
+      this._callId = callId
+      this._accountId = accountId
+      this._localContact = localContact
+      this._localUri = localUri
+      this._remoteContact = remoteContact
+      this._remoteUri = remoteUri
+      this._state = state
+      this._stateText = stateText
+      this._held = held
+      this._muted = muted
+      this._speaker = speaker
+      this._connectDuration = connectDuration
+      this._totalDuration = totalDuration
+      this._remoteOfferer = remoteOfferer
+      this._remoteAudioCount = remoteAudioCount
+      this._remoteVideoCount = remoteVideoCount
+      this._remoteNumber = remoteNumber
+      this._remoteName = remoteName
+      this._audioCount = audioCount
+      this._videoCount = videoCount
+      this._lastStatusCode = lastStatusCode
+      this._lastReason = lastReason
 
-        this._media = media;
-        this._provisionalMedia = provisionalMedia;
+      this._media = media
+      this._provisionalMedia = provisionalMedia
 
-        this._constructionTime = Math.round(new Date().getTime() / 1000);
+      this._constructionTime = Math.round(new Date().getTime() / 1000)
     }
 
     /**
@@ -146,7 +170,7 @@ class Call {
      * @returns {int}
      */
     getId(): number {
-        return this._id;
+      return this._id
     }
 
     /**
@@ -154,7 +178,7 @@ class Call {
      * @returns {int}
      */
     getAccountId(): number {
-        return this._accountId;
+      return this._accountId
     }
 
     /**
@@ -163,9 +187,8 @@ class Call {
      * @returns {String}
      */
     getCallId(): string {
-        return this._callId;
+      return this._callId
     }
-
 
     /**
      * Up-to-date call duration in seconds.
@@ -175,11 +198,11 @@ class Call {
      * @returns {int}
      */
     getTotalDuration(): number {
-        let time = Math.round(new Date().getTime() / 1000);
-        let offset = time - this._constructionTime;
+      const time = Math.round(new Date().getTime() / 1000)
+      const offset = time - this._constructionTime
 
-        return this._totalDuration + offset;
-    };
+      return this._totalDuration + offset
+    }
 
     /**
      * Up-to-date call connected duration (zero when call is not established)
@@ -187,14 +210,14 @@ class Call {
      * @returns {int}
      */
     getConnectDuration(): number {
-        if (this._connectDuration < 0 || this._state == "PJSIP_INV_STATE_DISCONNECTED") {
-            return this._connectDuration;
-        }
+      if (this._connectDuration < 0 || this._state === CallState.PJSIP_INV_STATE_DISCONNECTED) {
+        return this._connectDuration
+      }
 
-        let time = Math.round(new Date().getTime() / 1000);
-        let offset = time - this._constructionTime;
+      const time = Math.round(new Date().getTime() / 1000)
+      const offset = time - this._constructionTime
 
-        return this._connectDuration + offset;
+      return this._connectDuration + offset
     }
 
     /**
@@ -204,8 +227,8 @@ class Call {
      * @returns {string}
      */
     getFormattedTotalDuration(): string {
-        return this._formatTime(this.getTotalDuration());
-    };
+      return this._formatTime(this.getTotalDuration())
+    }
 
     /**
      * Call duration in "MM:SS" format.
@@ -214,8 +237,8 @@ class Call {
      * @returns {string}
      */
     getFormattedConnectDuration(): string {
-        return this._formatTime(this.getConnectDuration());
-    };
+      return this._formatTime(this.getConnectDuration())
+    }
 
     /**
      * Local Contact.
@@ -223,7 +246,7 @@ class Call {
      * @returns {String}
      */
     getLocalContact(): string {
-        return this._localContact;
+      return this._localContact
     }
 
     /**
@@ -232,7 +255,7 @@ class Call {
      * @returns {String}
      */
     getLocalUri(): string {
-        return this._localUri;
+      return this._localUri
     }
 
     /**
@@ -241,7 +264,7 @@ class Call {
      * @returns {String}
      */
     getRemoteContact(): string {
-        return this._remoteContact;
+      return this._remoteContact
     }
 
     /**
@@ -250,7 +273,7 @@ class Call {
      * @returns {String}
      */
     getRemoteUri(): string {
-        return this._remoteUri;
+      return this._remoteUri
     }
 
     /**
@@ -258,7 +281,7 @@ class Call {
      * @returns {String}
      */
     getRemoteName(): string {
-        return this._remoteName;
+      return this._remoteName
     }
 
     /**
@@ -266,20 +289,19 @@ class Call {
      * @returns {String}
      */
     getRemoteNumber(): string {
-        return this._remoteNumber;
+      return this._remoteNumber
     }
 
     /**
      * @returns {String}
      */
     getRemoteFormattedNumber(): string {
-        if (this._remoteName && this._remoteNumber) {
-            return `${this._remoteName} <${this._remoteNumber}>`;
-        } else if (this._remoteNumber) {
-            return this._remoteNumber;
-        } else {
-            return this._remoteUri
-        }
+      if (this._remoteName && this._remoteNumber) {
+        return `${this._remoteName} <${this._remoteNumber}>`
+      } if (this._remoteNumber) {
+        return this._remoteNumber
+      }
+      return this._remoteUri
     }
 
     /**
@@ -296,7 +318,7 @@ class Call {
      * @returns {String}
      */
     getState(): CallState {
-        return this._state;
+      return this._state
     }
 
     /**
@@ -305,23 +327,23 @@ class Call {
      * @returns {String}
      */
     getStateText(): string {
-        return this._stateText;
+      return this._stateText
     }
 
     isHeld(): boolean {
-        return this._held;
+      return this._held
     }
 
     isMuted(): boolean {
-        return this._muted;
+      return this._muted
     }
 
     isSpeaker(): boolean {
-        return this._speaker;
+      return this._speaker
     }
 
     isTerminated(): boolean {
-        return this._state === 'PJSIP_INV_STATE_DISCONNECTED';
+      return this._state === 'PJSIP_INV_STATE_DISCONNECTED'
     }
 
     /**
@@ -329,8 +351,8 @@ class Call {
      * @returns {boolean}
      */
     getRemoteOfferer(): number {
-        // TODO Verify whether boolean value
-        return this._remoteOfferer;
+      // TODO Verify whether boolean value
+      return this._remoteOfferer
     }
 
     /**
@@ -338,7 +360,7 @@ class Call {
      * @returns {int}
      */
     getRemoteAudioCount(): number {
-        return this._remoteAudioCount;
+      return this._remoteAudioCount
     }
 
     /**
@@ -346,23 +368,25 @@ class Call {
      * @returns {int}
      */
     getRemoteVideoCount(): number {
-        return this._remoteVideoCount;
+      return this._remoteVideoCount
     }
 
     /**
-     * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
+     * Number of simultaneous active audio streams for this call.
+     * If zero - audio is disabled in this call.
      * @returns {int}
      */
     getAudioCount(): number {
-        return this._audioCount;
+      return this._audioCount
     }
 
     /**
-     * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
+     * Number of simultaneous active video streams for this call.
+     * If zero - video is disabled in this call.
      * @returns {*}
      */
     getVideoCount(): number {
-        return this._videoCount;
+      return this._videoCount
     }
 
     /**
@@ -429,7 +453,7 @@ class Call {
      * @returns {string}
      */
     getLastStatusCode(): string {
-        return this._lastStatusCode;
+      return this._lastStatusCode
     }
 
     /**
@@ -438,15 +462,15 @@ class Call {
      * @returns {string}
      */
     getLastReason(): string {
-        return this._lastReason;
+      return this._lastReason
     }
 
     getMedia(): string {
-        return this._media;
+      return this._media
     }
 
     getProvisionalMedia(): string {
-        return this._provisionalMedia;
+      return this._provisionalMedia
     }
 
     /**
@@ -456,23 +480,23 @@ class Call {
      * @returns {string}
      */
     _formatTime(seconds: number): string {
-        if (isNaN(seconds) || seconds < 0) {
-            return "00:00";
-        }
-        var hours = parseInt(String(seconds/3600)) % 24;
-        var minutes = parseInt(String(seconds/60)) % 60;
-        var result = "";
-        seconds = seconds % 60;
+      if (Number.isNaN(seconds) || seconds < 0) {
+        return '00:00'
+      }
+      const hours = parseInt(String(seconds / 3600), 10) % 24
+      const minutes = parseInt(String(seconds / 60), 10) % 60
+      let result = ''
+      seconds %= 60
 
-        if (hours > 0) {
-            result += (hours < 10 ? "0" + hours : hours) + ":";
-        }
+      if (hours > 0) {
+        result += `${hours < 10 ? `0${hours}` : hours}:`
+      }
 
-        result += (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
-        return result;
-    };
+      result += `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+      return result
+    }
 }
 
-export { Call };
+export { Call }
 
-export default Call;
+export default Call

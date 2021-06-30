@@ -7,7 +7,7 @@ export default class AccountRegistration {
     _statusText: string;
     _active: boolean;
     _reason: string;
-    constructor({ status, statusText, active, reason }: {
+    constructor({ status, statusText, active, reason, }: {
         status: any;
         statusText: any;
         active: any;
@@ -15,8 +15,8 @@ export default class AccountRegistration {
     });
     /**
      * Last registration status code (SIP status codes according to RFC 3261).
-     * If status code is empty, the account is currently not registered. Any other value indicates the SIP
-     * status code of the registration.
+     * If status code is empty, the account is currently not registered.
+     * Any other value indicates the SIP status code of the registration.
      *
      * @returns {string|null}
      */

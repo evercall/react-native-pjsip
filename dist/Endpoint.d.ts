@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import Call, { CallData } from './Call';
 import { MessageData } from './Message';
 import Account, { AccountConfiguration } from './Account';
+import Call, { CallData } from './Call';
 export declare type EndpointConfiguration = {};
 /**
  * SIP headers object, where each key is a header name and value is a header value.
@@ -33,9 +33,12 @@ export declare type EndpointConfiguration = {};
  *
  * @typedef {Object} PjSipCallSetttings
  * @property {number} flag - Bitmask of #pjsua_call_flag constants.
- * @property {number} req_keyframe_method - This flag controls what methods to request keyframe are allowed on the call.
- * @property {number} aud_cnt - Number of simultaneous active audio streams for this call. Setting this to zero will disable audio in this call.
- * @property {number} vid_cnt - Number of simultaneous active video streams for this call. Setting this to zero will disable video in this call.
+ * @property {number} req_keyframe_method - This flag controls what methods to request
+ * keyframe are allowed on the call.
+ * @property {number} aud_cnt - Number of simultaneous active audio streams for this call.
+ * Setting this to zero will disable audio in this call.
+ * @property {number} vid_cnt - Number of simultaneous active video streams for this call.
+ * Setting this to zero will disable video in this call.
  */
 export default class Endpoint extends EventEmitter {
     constructor();
@@ -45,26 +48,27 @@ export default class Endpoint extends EventEmitter {
      *
      * @returns {Promise}
      */
-    start(configuration: EndpointConfiguration): Promise<{
+    static start(configuration: EndpointConfiguration): Promise<{
         accounts: Account[];
         calls: Call[];
     }>;
-    stop(): Promise<void>;
-    updateStunServers(accountId: number, stunServerList: string[]): Promise<any>;
+    static stop(): Promise<void>;
+    static updateStunServers(accountId: number, stunServerList: string[]): Promise<any>;
     /**
      * @param configuration
      * @returns {Promise}
      */
-    changeNetworkConfiguration(configuration: any): Promise<any>;
+    static changeNetworkConfiguration(configuration: any): Promise<any>;
     /**
      * @param configuration
      * @returns {Promise}
      */
-    changeServiceConfiguration(configuration: any): Promise<any>;
+    static changeServiceConfiguration(configuration: any): Promise<any>;
     /**
-     * Add a new account. If registration is configured for this account, this function would also start the
-     * SIP registration session with the SIP registrar server. This SIP registration session will be maintained
-     * internally by the library, and application doesn't need to do anything to maintain the registration session.
+     * Add a new account. If registration is configured for this account, this function
+     * would also start the SIP registration session with the SIP registrar server.
+     * This SIP registration session will be maintained internally by the library, and
+     * application doesn't need to do anything to maintain the registration session.
      *
      * An example configuration:
      * {
@@ -82,134 +86,152 @@ export default class Endpoint extends EventEmitter {
      * @param {Object} configuration
      * @returns {Promise}
      */
-    createAccount(configuration: AccountConfiguration): Promise<Account>;
-    replaceAccount(account: Account, configuration: AccountConfiguration): void;
+    static createAccount(configuration: AccountConfiguration): Promise<Account>;
+    /**
+     * TODO make this
+     * @param account
+     * @param configuration
+     */
     /**
      * Update registration or perform unregistration.
-     * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
-     * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
+     * If registration is configured for this account, then initial SIP REGISTER will
+     * be sent when the account is added.
+     * Application normally only need to call this function if it wants to manually
+     * update the registration or to unregister from the server.
      *
      * @param {Account} account
-     * @param bool renew If renew argument is zero, this will start unregistration process.
+     * @param {bool} renew If renew argument is zero, this will start unregistration process.
      * @returns {Promise}
      */
-    registerAccount(account: Account, renew?: boolean): Promise<any>;
+    static registerAccount(account: Account, renew?: boolean): Promise<any>;
     /**
-     * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
+     * Delete an account. This will unregister the account from the SIP server,
+     * if necessary, and terminate server side presence subscriptions associated
+     * with this account.
      *
      * @param {Account} account
      * @returns {Promise}
      */
-    deleteAccount(account: Account): Promise<any>;
+    static deleteAccount(account: Account): Promise<any>;
     /**
      * Gets list of all accounts
      *
      * @returns {Promise}
      */
-    getAccounts(): Promise<Account[]>;
+    static getAccounts(): Promise<Account[]>;
     /**
      * Gets an account by id
      *
      * @returns {Promise}
      */
-    getAccount(accountId: number): Promise<Account>;
+    static getAccount(accountId: number): Promise<Account>;
     /**
      * Make an outgoing call to the specified URI.
      * Available call settings:
-     * - audioCount - Number of simultaneous active audio streams for this call. Setting this to zero will disable audio in this call.
-     * - videoCount - Number of simultaneous active video streams for this call. Setting this to zero will disable video in this call.
-     * -
+     * - audioCount - Number of simultaneous active audio streams for this call.
+     * Setting this to zero will disable audio in this call.
+     * - videoCount - Number of simultaneous active video streams for this call.
+     * Setting this to zero will disable video in this call.
      *
      * @param account {Account}
      * @param destination {String} Destination SIP URI.
      * @param callSettings {PjSipCallSetttings} Outgoing call settings.
-     * @param msgSettings {PjSipMsgData} Outgoing call additional information to be sent with outgoing SIP message.
+     * @param msgData {PjSipMsgData} Outgoing call additional information to
+     * be sent with outgoing SIP message.
      */
-    makeCall(account: Account, destination: string, callSettings?: any, msgData?: any): Promise<Call>;
+    static makeCall(account: Account, destination: string, callSettings?: any, msgData?: any): Promise<Call>;
     /**
      * Send response to incoming INVITE request.
      *
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    answerCall(call: Call): Promise<any>;
+    static answerCall(call: Call): Promise<any>;
     /**
      * Hangup call by using method that is appropriate according to the call state.
      *
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    hangupCall(call: Call): Promise<any>;
+    static hangupCall(call: Call): Promise<any>;
     /**
      * Hangup call by using Decline (603) method.
      *
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    declineCall(call: Call): Promise<any>;
+    static declineCall(call: Call): Promise<any>;
     /**
-     * Put the specified call on hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is being put on hold.
+     * Put the specified call on hold. This will send re-INVITE with the appropriate
+     * SDP to inform remote that the call is being put on hold.
      *
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    holdCall(call: Call): Promise<any>;
+    static holdCall(call: Call): Promise<any>;
     /**
-     * Release the specified call from hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is resumed.
+     * Release the specified call from hold. This will send re-INVITE with the appropriate
+     * SDP to inform remote that the call is resumed.
      *
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    unholdCall(call: Call): Promise<any>;
+    static unholdCall(call: Call): Promise<any>;
     /**
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    muteCall(call: Call): Promise<any>;
+    static muteCall(call: Call): Promise<any>;
     /**
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    unMuteCall(call: Call): Promise<any>;
+    static unMuteCall(call: Call): Promise<any>;
     /**
      * @returns {Promise}
      */
-    useSpeaker(): Promise<any>;
+    static useSpeaker(): Promise<any>;
     /**
      * @param call {Call} Call instance
      * @returns {Promise}
      */
-    useEarpiece(): Promise<any>;
+    static useEarpiece(): Promise<any>;
     /**
      * Initiate call transfer to the specified address.
-     * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
+     * This function will send REFER request to instruct remote call party to
+     * initiate a new INVITE session to the specified destination/target.
      *
      * @param account {Account} Account associated with call.
      * @param call {Call} The call to be transferred.
-     * @param destination URI of new target to be contacted. The URI may be in name address or addr-spec format.
+     * @param destination URI of new target to be contacted. The URI may be
+     * in name address or addr-spec format.
      * @returns {Promise}
      */
-    xferCall(account: Account, call: Call, destination: string): Promise<any>;
+    static xferCall(account: Account, call: Call, destination: string): Promise<any>;
     /**
      * Initiate attended call transfer.
-     * This function will send REFER request to instruct remote call party to initiate new INVITE session to the URL of destCall.
-     * The party at destCall then should "replace" the call with us with the new call from the REFER recipient.
+     * This function will send REFER request to instruct remote call party to
+     * initiate new INVITE session to the URL of destCall.
+     * The party at destCall then should "replace" the call with us with the
+     * new call from the REFER recipient.
      *
      * @param call {Call} The call to be transferred.
      * @param destCall {Call} The call to be transferred.
      * @returns {Promise}
      */
-    xferReplacesCall(call: Call, destCall: Call): Promise<any>;
+    static xferReplacesCall(call: Call, destCall: Call): Promise<any>;
     /**
      * Redirect (forward) specified call to destination.
-     * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
+     * This function will send response to INVITE to instruct remote call party to
+     * redirect incoming call to the specified destination/target.
      *
      * @param account {Account} Account associated with call.
      * @param call {Call} The call to be transferred.
-     * @param destination URI of new target to be contacted. The URI may be in name address or addr-spec format.
+     * @param destination URI of new target to be contacted. The URI may be in
+     * name address or addr-spec format.
      * @returns {Promise}
      */
-    redirectCall(account: Account, call: Call, destination: string): Promise<any>;
+    static redirectCall(account: Account, call: Call, destination: string): Promise<any>;
     /**
      * Send DTMF digits to remote using RFC 2833 payload formats.
      *
@@ -217,11 +239,11 @@ export default class Endpoint extends EventEmitter {
      * @param digits {String} DTMF string digits to be sent as described on RFC 2833 section 3.10.
      * @returns {Promise}
      */
-    dtmfCall(call: Call, digits: string): Promise<any>;
-    activateAudioSession(): Promise<any>;
-    deactivateAudioSession(): Promise<any>;
-    changeOrientation(orientation: ('PJMEDIA_ORIENT_UNKNOWN' | 'PJMEDIA_ORIENT_ROTATE_90DEG' | 'PJMEDIA_ORIENT_ROTATE_270DEG' | 'PJMEDIA_ORIENT_ROTATE_180DEG' | 'PJMEDIA_ORIENT_NATURAL')): void;
-    changeCodecSettings(codecSettings: {
+    static dtmfCall(call: Call, digits: string): Promise<any>;
+    static activateAudioSession(): Promise<any>;
+    static deactivateAudioSession(): Promise<any>;
+    static changeOrientation(orientation: ('PJMEDIA_ORIENT_UNKNOWN' | 'PJMEDIA_ORIENT_ROTATE_90DEG' | 'PJMEDIA_ORIENT_ROTATE_270DEG' | 'PJMEDIA_ORIENT_ROTATE_180DEG' | 'PJMEDIA_ORIENT_NATURAL')): void;
+    static changeCodecSettings(codecSettings: {
         'opus/48000/2'?: number;
         'G722/16000/1'?: number;
         'G7221/16000/1'?: number;
@@ -284,5 +306,5 @@ export default class Endpoint extends EventEmitter {
      * @returns {string}
      * @private
      */
-    _normalize(account: Account, destination: string): string;
+    static _normalize(account: Account, destination: string): string;
 }

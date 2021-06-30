@@ -187,12 +187,14 @@ declare class Call {
      */
     getRemoteVideoCount(): number;
     /**
-     * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
+     * Number of simultaneous active audio streams for this call.
+     * If zero - audio is disabled in this call.
      * @returns {int}
      */
     getAudioCount(): number;
     /**
-     * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
+     * Number of simultaneous active video streams for this call.
+     * If zero - video is disabled in this call.
      * @returns {*}
      */
     getVideoCount(): number;

@@ -4,7 +4,6 @@ android/build
 node_modules
 android/src/main/java/org/
 android/src/main/jniLibs/
-ios/VialerPJSIP.framework/
 .libs.lock
 .libs.tar.gz
 yarn-error.log

@@ -1,5 +1,5 @@
-{ 
-   "compilerOptions":{ 
+{
+   "compilerOptions":{
       "baseUrl":".",
       "outDir":"./dist/",
       "sourceMap":true,
@@ -7,7 +7,7 @@
       "module":"es6",
       "target":"es6",
       "jsx":"preserve",
-      "lib":[ 
+      "lib":[
          "es5",
          "es6",
          "dom"
@@ -18,13 +18,14 @@
       "moduleResolution":"node",
       "allowSyntheticDefaultImports":true,
       "declaration": true,
+      "emitDeclarationOnly": true,
       "skipLibCheck": true
    },
-   "include":[ 
+   "include":[
       "./src/**/*"
    ],
-   "awesomeTypescriptLoaderOptions":{ 
-      "reportFiles":[ 
+   "awesomeTypescriptLoaderOptions":{
+      "reportFiles":[
          "./src/**/*"
       ]
    }

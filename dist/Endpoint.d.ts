@@ -90,7 +90,7 @@ export default class Endpoint extends EventEmitter {
      * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
      *
      * @param {Account} account
-     * @param bool renew If renew argument is zero, this will start unregistration process.
+     * @param renew renew If renew argument is zero, this will start unregistration process.
      * @returns {Promise}
      */
     registerAccount(account: Account, renew?: boolean): Promise<any>;
@@ -104,15 +104,21 @@ export default class Endpoint extends EventEmitter {
     /**
      * Gets list of all accounts
      *
-     * @returns {Promise}
+     * @returns Promise<Account[]>
      */
     getAccounts(): Promise<Account[]>;
     /**
      * Gets an account by id
      *
-     * @returns {Promise}
+     * @returns Promise<Account>
      */
     getAccount(accountId: number): Promise<Account>;
+    /**
+     * Gets list of all calls
+     *
+     * @returns Promise<Call[]>
+     */
+    getCalls(): Promise<Call[]>;
     /**
      * Make an outgoing call to the specified URI.
      * Available call settings:
@@ -123,7 +129,7 @@ export default class Endpoint extends EventEmitter {
      * @param account {Account}
      * @param destination {String} Destination SIP URI.
      * @param callSettings {PjSipCallSetttings} Outgoing call settings.
-     * @param msgSettings {PjSipMsgData} Outgoing call additional information to be sent with outgoing SIP message.
+     * @param msgData {PjSipMsgData} Outgoing call additional information to be sent with outgoing SIP message.
      */
     makeCall(account: Account, destination: string, callSettings?: any, msgData?: any): Promise<Call>;
     /**
@@ -176,7 +182,6 @@ export default class Endpoint extends EventEmitter {
      */
     useSpeaker(): Promise<any>;
     /**
-     * @param call {Call} Call instance
      * @returns {Promise}
      */
     useEarpiece(): Promise<any>;

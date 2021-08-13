@@ -4,15 +4,20 @@
  */
 export default class AccountRegistration {
     _status: string;
+
     _statusText: string;
+
     _active: boolean;
+
     _reason: string;
 
-    constructor({status, statusText, active, reason}) {
-        this._status = status;
-        this._statusText = statusText;
-        this._active = active;
-        this._reason = reason;
+    constructor({
+      status, statusText, active, reason,
+    }) {
+      this._status = status
+      this._statusText = statusText
+      this._active = active
+      this._reason = reason
     }
 
     /**
@@ -23,7 +28,7 @@ export default class AccountRegistration {
      * @returns {string|null}
      */
     getStatus(): string | null {
-        return this._status;
+      return this._status
     }
 
     /**
@@ -32,7 +37,7 @@ export default class AccountRegistration {
      * @returns {string|null}
      */
     getStatusText(): string | null {
-        return this._statusText;
+      return this._statusText
     }
 
     /**
@@ -42,7 +47,7 @@ export default class AccountRegistration {
      * @returns boolean
      */
     isActive(): boolean {
-        return this._active;
+      return this._active
     }
 
     /**
@@ -51,7 +56,7 @@ export default class AccountRegistration {
      * @returns {String|null}
      */
     getReason(): string | null {
-        return this._reason;
+      return this._reason
     }
 
     toJson(): {
@@ -59,12 +64,12 @@ export default class AccountRegistration {
         statusText: string,
         active: boolean,
         reason: string,
-    } {
-        return  {
-            status: this._status,
-            statusText: this._statusText,
-            active: this._active,
-            reason: this._reason
-        }
+        } {
+      return {
+        status: this._status,
+        statusText: this._statusText,
+        active: this._active,
+        reason: this._reason,
+      }
     }
 }

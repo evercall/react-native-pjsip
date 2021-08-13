@@ -11,50 +11,56 @@ export type MessageData = {
  * This class describes the information and current status of a call.
  */
 export default class Message {
-
     _accountId: number;
+
     _contactUri: string;
+
     _fromUri: string;
+
     _fromName: string;
+
     _fromNumber: string;
+
     _toUri: string;
+
     _body: string;
+
     _contentType: string;
 
     constructor({
-        accountId,
-        contactUri,
-        fromUri,
-        toUri,
-        body,
-        contentType
+      accountId,
+      contactUri,
+      fromUri,
+      toUri,
+      body,
+      contentType,
     }: MessageData) {
-        let fromNumber = null;
-        let fromName = null;
+      let fromNumber = null
+      let fromName = null
 
-        if (fromUri) {
-            let match = fromUri.match(/"([^"]+)" <sip:([^@]+)@/);
+      if (fromUri) {
+        let match = fromUri.match(/"([^"]+)" <sip:([^@]+)@/)
 
-            if (match) {
-                fromName = match[1];
-                fromNumber = match[2];
-            } else {
-                match = fromUri.match(/sip:([^@]+)@/);
+        if (match) {
+          fromName = match[1]
+          fromNumber = match[2]
+        } else {
+          match = fromUri.match(/sip:([^@]+)@/)
 
-                if (match) {
-                    fromNumber = match[1];
-                }
-            }
+          if (match) {
+            fromNumber = match[1]
+          }
         }
+      }
 
-        this._accountId = accountId;
-        this._contactUri = contactUri;
-        this._fromUri = fromUri;
-        this._fromName = fromName;
-        this._fromNumber = fromNumber;
-        this._toUri = toUri;
-        this._body = body;
-        this._contentType = contentType;
+      this._accountId = accountId
+      this._contactUri = contactUri
+      this._fromUri = fromUri
+      this._fromName = fromName
+      this._fromNumber = fromNumber
+      this._toUri = toUri
+      this._body = body
+      this._contentType = contentType
     }
 
     /**
@@ -62,7 +68,7 @@ export default class Message {
      * @returns {int}
      */
     getAccountId(): number {
-        return this._accountId;
+      return this._accountId
     }
 
     /**
@@ -70,7 +76,7 @@ export default class Message {
      * @returns {String}
      */
     getContactUri(): string {
-        return this._contactUri;
+      return this._contactUri
     }
 
     /**
@@ -78,7 +84,7 @@ export default class Message {
      * @returns {String}
      */
     getFromUri(): string {
-        return this._fromUri;
+      return this._fromUri
     }
 
     /**
@@ -86,7 +92,7 @@ export default class Message {
      * @returns {String}
      */
     getFromName(): string {
-        return this._fromName;
+      return this._fromName
     }
 
     /**
@@ -94,7 +100,7 @@ export default class Message {
      * @returns {String}
      */
     getFromNumber(): string {
-        return this._fromNumber;
+      return this._fromNumber
     }
 
     /**
@@ -102,7 +108,7 @@ export default class Message {
      * @returns {String}
      */
     getToUri(): string {
-        return this._toUri;
+      return this._toUri
     }
 
     /**
@@ -110,7 +116,7 @@ export default class Message {
      * @returns {String}
      */
     getBody(): string {
-        return this._body;
+      return this._body
     }
 
     /**
@@ -118,7 +124,6 @@ export default class Message {
      * @returns {String}
      */
     getContentType(): string {
-        return this._contentType;
+      return this._contentType
     }
-
 }

@@ -1,4 +1,7 @@
 import AccountRegistration from './AccountRegistration';
+/**
+ * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
+ */
 
 /**
  * This describes account configuration and registration status
@@ -6,7 +9,7 @@ import AccountRegistration from './AccountRegistration';
 export default class Account {
   constructor(data) {
     this._data = data;
-    this._registration = new AccountRegistration(data['registration']);
+    this._registration = new AccountRegistration(data.registration);
   }
   /**
    * The account ID.
@@ -28,6 +31,7 @@ export default class Account {
   }
   /**
    * Full name specified in Endpoint.createAccount().
+   * If this value has been set to null, then it will return "sip:" + this.getDomain
    * @returns {String}
    */
 
@@ -46,7 +50,7 @@ export default class Account {
   }
   /**
    * Domain specified in Endpoint.createAccount().
-   * @returns {int|null}
+   * @returns {string}
    */
 
 
@@ -107,7 +111,7 @@ export default class Account {
 
 
   getRegServer() {
-    return this._data.regServer || "";
+    return this._data.regServer || '';
   }
   /**
    * Port specified in Endpoint.createAccount().

@@ -18,7 +18,7 @@ export default class Message {
     _toUri: string;
     _body: string;
     _contentType: string;
-    constructor({ accountId, contactUri, fromUri, toUri, body, contentType }: MessageData);
+    constructor({ accountId, contactUri, fromUri, toUri, body, contentType, }: MessageData);
     /**
      * The account ID where this message belongs.
      * @returns {int}

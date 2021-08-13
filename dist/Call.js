@@ -10,8 +10,6 @@ export let CallState;
   CallState["PJSIP_INV_STATE_DISCONNECTED"] = "PJSIP_INV_STATE_DISCONNECTED";
 })(CallState || (CallState = {}));
 
-;
-
 /**
  * This class describes the information and current status of a call.
  */
@@ -128,12 +126,13 @@ class Call {
     let offset = time - this._constructionTime;
     return this._totalDuration + offset;
   }
-
   /**
    * Up-to-date call connected duration (zero when call is not established)
    *
    * @returns {int}
    */
+
+
   getConnectDuration() {
     if (this._connectDuration < 0 || this._state == "PJSIP_INV_STATE_DISCONNECTED") {
       return this._connectDuration;
@@ -154,22 +153,24 @@ class Call {
   getFormattedTotalDuration() {
     return this._formatTime(this.getTotalDuration());
   }
-
   /**
    * Call duration in "MM:SS" format.
    *
    * @public
    * @returns {string}
    */
+
+
   getFormattedConnectDuration() {
     return this._formatTime(this.getConnectDuration());
   }
-
   /**
    * Local Contact.
    * TODO: Provide example
    * @returns {String}
    */
+
+
   getLocalContact() {
     return this._localContact;
   }
@@ -424,9 +425,9 @@ class Call {
       return "00:00";
     }
 
-    var hours = parseInt(String(seconds / 3600)) % 24;
-    var minutes = parseInt(String(seconds / 60)) % 60;
-    var result = "";
+    const hours = parseInt(String(seconds / 3600)) % 24;
+    const minutes = parseInt(String(seconds / 60)) % 60;
+    let result = '';
     seconds = seconds % 60;
 
     if (hours > 0) {

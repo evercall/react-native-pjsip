@@ -7,7 +7,7 @@ export default class AccountRegistration {
     _statusText: string;
     _active: boolean;
     _reason: string;
-    constructor({ status, statusText, active, reason }: {
+    constructor({ status, statusText, active, reason, }: {
         status: any;
         statusText: any;
         active: any;

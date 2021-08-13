@@ -4,21 +4,21 @@ import AccountRegistration from './AccountRegistration'
  * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
  */
 export type AccountConfiguration = {
-    id: number,
-    uri: string | null,
-    name: string | null,
+    id?: number | null,
+    uri?: string | null,
+    name?: string | null,
     username: string,
     domain: string,
     password: string,
-    proxy: string | null,
-    transport: string | null,
-    contactParams: string | null,
-    contactUriParams: string | null,
-    regServer: string | null,
-    regTimeout: string | null,
-    regContactParams: string | null,
-    regHeaders: Object | null,
-    regOnAdd: boolean | null
+    proxy?: string | null,
+    transport?: string | null,
+    contactParams?: string | null,
+    contactUriParams?: string | null,
+    regServer?: string | null,
+    regTimeout?: string | null,
+    regContactParams?: string | null,
+    regHeaders?: Object | null,
+    regOnAdd?: boolean | null
 };
 
 /**

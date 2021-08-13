@@ -84,6 +84,13 @@ public class PjSipModule extends ReactContextBaseJavaModule {
         getReactApplicationContext().startService(intent);
     }
 
+	@ReactMethod
+    public void getCalls(Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createGetCallsIntent(callbackId, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
     @ReactMethod
     public void makeCall(int accountId, String destination, ReadableMap callSettings, ReadableMap msgData,  Callback callback) {
         int callbackId = receiver.register(callback);

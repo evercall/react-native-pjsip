@@ -27,6 +27,7 @@
 -(void) deleteAccount:(int) accountId;
 -(NSMutableArray *)getAccounts;
 -(PjSipAccount *)findAccount:(int)accountId;
+-(NSMutableDictionary *)getCalls;
 -(PjSipCall *)makeCall:(PjSipAccount *) account destination:(NSString *)destination callSettings: (NSDictionary *)callSettings msgData: (NSDictionary *)msgData;
 -(void)pauseParallelCalls:(PjSipCall*) call; // TODO: Remove this feature.
 -(PjSipCall *)findCall:(int)callId;

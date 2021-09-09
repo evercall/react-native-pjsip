@@ -13,7 +13,7 @@ export default class Account {
   }
   /**
    * The account ID.
-   * @returns {int}
+   * @returns {number}
    */
 
 
@@ -22,7 +22,7 @@ export default class Account {
   }
   /**
    * This is the URL to be put in the request URI for the registration, and will look something like "sip:serviceprovider".
-   * @returns {String}
+   * @returns {string}
    */
 
 
@@ -32,7 +32,7 @@ export default class Account {
   /**
    * Full name specified in Endpoint.createAccount().
    * If this value has been set to null, then it will return "sip:" + this.getDomain
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -41,7 +41,7 @@ export default class Account {
   }
   /**
    * Username specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {string}
    */
 
 
@@ -59,7 +59,7 @@ export default class Account {
   }
   /**
    * Password specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {string}
    */
 
 
@@ -68,7 +68,7 @@ export default class Account {
   }
   /**
    * Proxy specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -77,7 +77,7 @@ export default class Account {
   }
   /**
    * Transport specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -87,7 +87,7 @@ export default class Account {
   /**
    * Additional parameters that will be appended in the Contact header
    * for this account.
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -97,7 +97,7 @@ export default class Account {
   /**
    * Additional URI parameters that will be appended in the Contact URI
    * for this account.
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -106,7 +106,7 @@ export default class Account {
   }
   /**
    * Port specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -115,7 +115,7 @@ export default class Account {
   }
   /**
    * Port specified in Endpoint.createAccount().
-   * @returns {String}
+   * @returns {number}
    */
 
 
@@ -123,7 +123,7 @@ export default class Account {
     return this._data.regTimeout;
   }
   /**
-   * @returns {String}
+   * @returns {string|null}
    */
 
 
@@ -131,7 +131,7 @@ export default class Account {
     return this._data.regContactParams;
   }
   /**
-   * @returns {Object}
+   * @returns {Object|null}
    */
 
 

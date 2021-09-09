@@ -5,6 +5,9 @@
     "build": "rm -rf dist && babel src --out-dir dist --source-maps --extensions \".ts,.js\" && tsc",
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "author": {
     "name": "Vadim Ruban",
     "email": "vadim.ruban@carusto.com"
@@ -58,5 +61,5 @@
     "type": "git",
     "url": "git+https://github.com/datso/react-native-pjsip.git"
   },
-  "version": "2.9.0"
+  "version": "2.9.1"
 }

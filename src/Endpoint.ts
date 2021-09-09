@@ -169,7 +169,7 @@ export default class Endpoint extends EventEmitter {
 
   updateStunServers (accountId: number, stunServerList: string[]): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.updateStunServers(accountId, stunServerList)
+      PjSipModule.updateStunServers(accountId, stunServerList, () => {})
       resolve()
     })
   }
@@ -558,7 +558,7 @@ export default class Endpoint extends EventEmitter {
 
   activateAudioSession (): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.activateAudioSession()
+      PjSipModule.activateAudioSession(success => {})
       resolve()
     })
   }
@@ -582,9 +582,9 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
-  changeCodecSettings (codecSettings: Codec[]): Promise<void> {
+  changeCodecSettings (codecSettings: Object): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.changeCodecSettings(codecSettings)
+      PjSipModule.changeCodecSettings(codecSettings, () => {})
       resolve()
     })
   }

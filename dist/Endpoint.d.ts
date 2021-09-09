@@ -258,7 +258,7 @@ export default class Endpoint extends EventEmitter {
     activateAudioSession(): Promise<void>;
     deactivateAudioSession(): Promise<void>;
     changeOrientation(orientation: Orientation): Promise<void>;
-    changeCodecSettings(codecSettings: Codec[]): Promise<void>;
+    changeCodecSettings(codecSettings: Object): Promise<void>;
     /**
      * @fires Endpoint#registration_changed
      * @private

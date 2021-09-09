@@ -748,28 +748,17 @@ export default class Endpoint extends EventEmitter {
    */
   _normalize (account: Account, destination: string): string {
     if (!destination.startsWith('sip:')) {
-      let realm = account.getRegServer()
+      let realm = account.getProxy()
 
-      if (!realm) {
+      if (realm === undefined) {
         realm = account.getDomain()
-        /* let s = realm.indexOf(":");
 
-                if (s > 0) {
-                    realm = realm.substr(0, s + 1);
-                } */
+        destination = `sip:${destination}@${realm}`
       }
 
-      destination = `sip:${destination}@${realm}`
+      return destination
     }
 
-    return destination
   }
 
-  // setUaConfig(UaConfig value)
-  // setMaxCalls
-  // setUserAgent
-  // setNatTypeInSdp
-
-  // setLogConfig(LogConfig value)
-  // setLevel
 }

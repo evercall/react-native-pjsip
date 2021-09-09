@@ -1,10 +1,89 @@
-export declare enum CallState {
+/**
+ * Enumeration of video keyframe request methods. Keyframe request is triggered by decoder, usually when the incoming
+ * video stream cannot be decoded properly due to missing video keyframe.
+ */
+export declare enum PJSUAVideoReqKeyframeMethod {
+    /**
+     * Requesting keyframe via SIP INFO message. Note that incoming keyframe request via SIP INFO will always be handled
+     * even if this flag is unset.
+     */
+    PJSUA_VID_REQ_KEYFRAME_SIP_INFO = "PJSUA_VID_REQ_KEYFRAME_SIP_INFO",
+    /**
+     * Requesting keyframe via Picture Loss Indication of RTCP feedback. This is currently not supported.
+     */
+    PJSUA_VID_REQ_KEYFRAME_RTCP_PLI = "PJSUA_VID_REQ_KEYFRAME_RTCP_PLI"
+}
+/**
+ * Flags to be given to various call APIs. More than one flags may be specified by bitmasking them.
+ */
+export declare enum PJSUACallFlags {
+    /**
+     * When the call is being put on hold, specify this flag to unhold it. This flag is only valid for
+     * pjsua_call_reinvite() and pjsua_call_update(). Note: for compatibility reason, this flag must have value of 1
+     * because previously the unhold option is specified as boolean value.
+     */
+    PJSUA_CALL_UNHOLD = "PJSUA_CALL_UNHOLD",
+    /**
+     * Update the local invite session's contact with the contact URI from the account. This flag is only valid for
+     * pjsua_call_set_hold2(), pjsua_call_reinvite() and pjsua_call_update(). This flag is useful in IP address change
+     * situation, after the local account's Contact has been updated (typically with re-registration) use this flag to
+     * update the invite session with the new Contact and to inform this new Contact to the remote peer with the outgoing
+     * re-INVITE or UPDATE.
+     */
+    PJSUA_CALL_UPDATE_CONTACT = "PJSUA_CALL_UPDATE_CONTACT",
+    /**
+     * Include SDP "m=" line with port set to zero for each disabled media (i.e when aud_cnt or vid_cnt is set to zero).
+     * This flag is only valid for pjsua_call_make_call(), pjsua_call_reinvite(), and pjsua_call_update().
+     * Note that even this flag is applicable in pjsua_call_reinvite() and pjsua_call_update(), it will only take
+     * effect when the re-INVITE/UPDATE operation regenerates SDP offer, such as changing audio or video count in
+     * the call setting.
+     */
+    PJSUA_CALL_INCLUDE_DISABLED_MEDIA = "PJSUA_CALL_INCLUDE_DISABLED_MEDIA",
+    /**
+     * Do not send SDP when sending INVITE or UPDATE. This flag is only valid for pjsua_call_make_call(),
+     * pjsua_call_reinvite()/reinvite2(), or pjsua_call_update()/update2(). For re-invite/update, specifying
+     * PJSUA_CALL_UNHOLD will take precedence over this flag.
+     */
+    PJSUA_CALL_NO_SDP_OFFER = "PJSUA_CALL_NO_SDP_OFFER",
+    /**
+     * Deinitialize and recreate media, including media transport. This flag is useful in IP address change situation,
+     * if the media transport address (or address family) changes, for example during IPv4/IPv6 network handover.
+     * This flag is only valid for pjsua_call_reinvite()/reinvite2(), or pjsua_call_update()/update2().
+     *
+     * Warning: If the re-INVITE/UPDATE fails, the old media will not be reverted.
+     */
+    PJSUA_CALL_REINIT_MEDIA = "PJSUA_CALL_REINIT_MEDIA",
+    /**
+     * Update the local invite session's Via with the via address from the account. This flag is only valid for
+     * pjsua_call_set_hold2(), pjsua_call_reinvite() and pjsua_call_update(). Similar to the flag
+     * PJSUA_CALL_UPDATE_CONTACT above, this flag is useful in IP address change situation, after the local account's
+     * Via has been updated (typically with re-registration).
+     */
+    PJSUA_CALL_UPDATE_VIA = "PJSUA_CALL_UPDATE_VIA",
+    /**
+     * Update dialog target to URI specified in pjsua_msg_data.target_uri. This flag is only valid for
+     * pjsua_call_set_hold(), pjsua_call_reinvite(), and pjsua_call_update(). This flag can be useful in IP address change
+     * scenario where IP version has been changed and application needs to update target IP address.
+     */
+    PJSUA_CALL_UPDATE_TARGET = "PJSUA_CALL_UPDATE_TARGET"
+}
+/**
+ * This enumeration describes invite session state
+ */
+export declare enum PJSIPInviteState {
+    /** Before INVITE is sent or received */
     PJSIP_INV_STATE_NULL = "PJSIP_INV_STATE_NULL",
+    /** After INVITE is sent */
     PJSIP_INV_STATE_CALLING = "PJSIP_INV_STATE_CALLING",
+    /** After INVITE is received */
     PJSIP_INV_STATE_INCOMING = "PJSIP_INV_STATE_INCOMING",
+    /** After response with To tag */
     PJSIP_INV_STATE_EARLY = "PJSIP_INV_STATE_EARLY",
+    /** After 2xx is sent/received */
     PJSIP_INV_STATE_CONNECTING = "PJSIP_INV_STATE_CONNECTING",
+    /** After ACK is sent/received */
     PJSIP_INV_STATE_CONFIRMED = "PJSIP_INV_STATE_CONFIRMED",
+    /** Session is terminated */
     PJSIP_INV_STATE_DISCONNECTED = "PJSIP_INV_STATE_DISCONNECTED"
 }
 export declare type CallData = {
@@ -15,7 +94,7 @@ export declare type CallData = {
     localUri: string;
     remoteContact: string;
     remoteUri: string;
-    state: CallState;
+    state: PJSIPInviteState;
     stateText: string;
     held: boolean;
     muted: boolean;
@@ -45,7 +124,7 @@ declare class Call {
     _localUri: string;
     _remoteContact: string;
     _remoteUri: string;
-    _state: CallState;
+    _state: PJSIPInviteState;
     _stateText: string;
     _held: boolean;
     _muted: boolean;
@@ -160,7 +239,7 @@ declare class Call {
      *
      * @returns {String}
      */
-    getState(): CallState;
+    getState(): PJSIPInviteState;
     /**
      * Text describing the state.
      *

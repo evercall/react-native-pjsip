@@ -1,14 +1,43 @@
-export let CallState;
+/**
+ * Enumeration of video keyframe request methods. Keyframe request is triggered by decoder, usually when the incoming
+ * video stream cannot be decoded properly due to missing video keyframe.
+ */
+export let PJSUAVideoReqKeyframeMethod;
+/**
+ * Flags to be given to various call APIs. More than one flags may be specified by bitmasking them.
+ */
 
-(function (CallState) {
-  CallState["PJSIP_INV_STATE_NULL"] = "PJSIP_INV_STATE_NULL";
-  CallState["PJSIP_INV_STATE_CALLING"] = "PJSIP_INV_STATE_CALLING";
-  CallState["PJSIP_INV_STATE_INCOMING"] = "PJSIP_INV_STATE_INCOMING";
-  CallState["PJSIP_INV_STATE_EARLY"] = "PJSIP_INV_STATE_EARLY";
-  CallState["PJSIP_INV_STATE_CONNECTING"] = "PJSIP_INV_STATE_CONNECTING";
-  CallState["PJSIP_INV_STATE_CONFIRMED"] = "PJSIP_INV_STATE_CONFIRMED";
-  CallState["PJSIP_INV_STATE_DISCONNECTED"] = "PJSIP_INV_STATE_DISCONNECTED";
-})(CallState || (CallState = {}));
+(function (PJSUAVideoReqKeyframeMethod) {
+  PJSUAVideoReqKeyframeMethod["PJSUA_VID_REQ_KEYFRAME_SIP_INFO"] = "PJSUA_VID_REQ_KEYFRAME_SIP_INFO";
+  PJSUAVideoReqKeyframeMethod["PJSUA_VID_REQ_KEYFRAME_RTCP_PLI"] = "PJSUA_VID_REQ_KEYFRAME_RTCP_PLI";
+})(PJSUAVideoReqKeyframeMethod || (PJSUAVideoReqKeyframeMethod = {}));
+
+export let PJSUACallFlags;
+/**
+ * This enumeration describes invite session state
+ */
+
+(function (PJSUACallFlags) {
+  PJSUACallFlags["PJSUA_CALL_UNHOLD"] = "PJSUA_CALL_UNHOLD";
+  PJSUACallFlags["PJSUA_CALL_UPDATE_CONTACT"] = "PJSUA_CALL_UPDATE_CONTACT";
+  PJSUACallFlags["PJSUA_CALL_INCLUDE_DISABLED_MEDIA"] = "PJSUA_CALL_INCLUDE_DISABLED_MEDIA";
+  PJSUACallFlags["PJSUA_CALL_NO_SDP_OFFER"] = "PJSUA_CALL_NO_SDP_OFFER";
+  PJSUACallFlags["PJSUA_CALL_REINIT_MEDIA"] = "PJSUA_CALL_REINIT_MEDIA";
+  PJSUACallFlags["PJSUA_CALL_UPDATE_VIA"] = "PJSUA_CALL_UPDATE_VIA";
+  PJSUACallFlags["PJSUA_CALL_UPDATE_TARGET"] = "PJSUA_CALL_UPDATE_TARGET";
+})(PJSUACallFlags || (PJSUACallFlags = {}));
+
+export let PJSIPInviteState;
+
+(function (PJSIPInviteState) {
+  PJSIPInviteState["PJSIP_INV_STATE_NULL"] = "PJSIP_INV_STATE_NULL";
+  PJSIPInviteState["PJSIP_INV_STATE_CALLING"] = "PJSIP_INV_STATE_CALLING";
+  PJSIPInviteState["PJSIP_INV_STATE_INCOMING"] = "PJSIP_INV_STATE_INCOMING";
+  PJSIPInviteState["PJSIP_INV_STATE_EARLY"] = "PJSIP_INV_STATE_EARLY";
+  PJSIPInviteState["PJSIP_INV_STATE_CONNECTING"] = "PJSIP_INV_STATE_CONNECTING";
+  PJSIPInviteState["PJSIP_INV_STATE_CONFIRMED"] = "PJSIP_INV_STATE_CONFIRMED";
+  PJSIPInviteState["PJSIP_INV_STATE_DISCONNECTED"] = "PJSIP_INV_STATE_DISCONNECTED";
+})(PJSIPInviteState || (PJSIPInviteState = {}));
 
 /**
  * This class describes the information and current status of a call.
@@ -134,7 +163,7 @@ class Call {
 
 
   getConnectDuration() {
-    if (this._connectDuration < 0 || this._state == "PJSIP_INV_STATE_DISCONNECTED") {
+    if (this._connectDuration < 0 || this._state == 'PJSIP_INV_STATE_DISCONNECTED') {
       return this._connectDuration;
     }
 
@@ -422,7 +451,7 @@ class Call {
 
   _formatTime(seconds) {
     if (isNaN(seconds) || seconds < 0) {
-      return "00:00";
+      return '00:00';
     }
 
     const hours = parseInt(String(seconds / 3600)) % 24;
@@ -431,10 +460,10 @@ class Call {
     seconds = seconds % 60;
 
     if (hours > 0) {
-      result += (hours < 10 ? "0" + hours : hours) + ":";
+      result += (hours < 10 ? '0' + hours : hours) + ':';
     }
 
-    result += (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    result += (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
     return result;
   }
 

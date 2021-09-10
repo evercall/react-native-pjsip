@@ -132,6 +132,15 @@ public class PjActions {
         return intent;
     }
 
+    public static Intent createGetAccountIntent(int callbackId, int accountId, Context context) {
+            Intent intent = new Intent(context, PjSipService.class);
+            intent.setAction(PjActions.ACTION_GET_CALL);
+            intent.putExtra("callback_id", callbackId);
+            intent.putExtra("call_id", callId);
+
+            return intent;
+        }
+
     public static Intent createAccountDeleteIntent(int callbackId, int accountId, Context context) {
         Intent intent = new Intent(context, PjSipService.class);
         intent.setAction(PjActions.ACTION_DELETE_ACCOUNT);

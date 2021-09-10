@@ -418,6 +418,9 @@ public class PjSipService extends Service {
             case PjActions.ACTION_GET_CALLS:
 			    handleGetCalls(intent);
 			    break;
+            case PjActions.ACTION_GET_Call:
+                handleGetCall(intent);
+                break;
             case PjActions.ACTION_MAKE_CALL:
                 handleCallMake(intent);
                 break;
@@ -584,6 +587,24 @@ public class PjSipService extends Service {
     private void handleGetAccounts(Intent intent) {
         try {
             mEmitter.fireAccountsRetrieved(intent, mAccounts);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleGetCall(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+            PjSipCall call = findCall(callId);
+
+            for (PjSipCall c : mCalls) {
+                if (c.getId() == callId) {
+                    call = c;
+                    break;
+                }
+            }
+
+            mEmitter.fireAccountRetrieved(intent, call);
         } catch (Exception e) {
             mEmitter.fireIntentHandled(intent, e);
         }

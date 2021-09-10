@@ -495,7 +495,7 @@ export default class Endpoint extends EventEmitter {
 
   activateAudioSession() {
     return new Promise(resolve => {
-      PjSipModule.activateAudioSession(success => {});
+      PjSipModule.activateAudioSession(() => {});
       resolve();
     });
   }

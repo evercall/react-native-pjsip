@@ -82,7 +82,7 @@ export default class Endpoint extends EventEmitter {
 
   stop() {
     return new Promise(resolve => {
-      PjSipModule.stop();
+      PjSipModule.stop(() => {});
       resolve();
     });
   }
@@ -159,7 +159,7 @@ export default class Endpoint extends EventEmitter {
 
   deleteAccount(account) {
     return new Promise(resolve => {
-      PjSipModule.deleteAccount(account.getId());
+      PjSipModule.deleteAccount(account.getId(), () => {});
       resolve();
     });
   }
@@ -389,7 +389,7 @@ export default class Endpoint extends EventEmitter {
 
   useSpeaker() {
     return new Promise(resolve => {
-      PjSipModule.useSpeaker();
+      PjSipModule.useSpeaker(() => {});
       resolve();
     });
   }
@@ -400,7 +400,7 @@ export default class Endpoint extends EventEmitter {
 
   useEarpiece() {
     return new Promise(resolve => {
-      PjSipModule.useEarpiece();
+      PjSipModule.useEarpiece(() => {});
       resolve();
     });
   }

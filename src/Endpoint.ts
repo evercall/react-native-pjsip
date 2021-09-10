@@ -8,7 +8,7 @@ import Account, { AccountConfiguration } from './Account'
 /**
  * @example { 'speex/8000': 1 }
  */
-export interface Codec {
+export type Codec = {
   /**
    * @example speex/8000
    */
@@ -162,7 +162,7 @@ export default class Endpoint extends EventEmitter {
 
   stop (): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.stop()
+      PjSipModule.stop(() => {})
       resolve()
     })
   }
@@ -236,7 +236,7 @@ export default class Endpoint extends EventEmitter {
    */
   deleteAccount (account: Account): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.deleteAccount(account.getId())
+      PjSipModule.deleteAccount(account.getId(), () => {})
       resolve()
     })
   }
@@ -455,7 +455,7 @@ export default class Endpoint extends EventEmitter {
    */
   useSpeaker (): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.useSpeaker()
+      PjSipModule.useSpeaker(() => {})
       resolve()
     })
   }
@@ -465,7 +465,7 @@ export default class Endpoint extends EventEmitter {
    */
   useEarpiece (): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.useEarpiece()
+      PjSipModule.useEarpiece(() => {})
       resolve()
     })
   }

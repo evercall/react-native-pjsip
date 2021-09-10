@@ -5,12 +5,12 @@ import Account, { AccountConfiguration } from './Account';
 /**
  * @example { 'speex/8000': 1 }
  */
-export interface Codec {
+export declare type Codec = {
     /**
      * @example speex/8000
      */
     [key: string]: number;
-}
+};
 export declare enum Orientation {
     PJMEDIA_ORIENT_NATURAL = "PJMEDIA_ORIENT_NATURAL",
     PJMEDIA_ORIENT_ROTATE_90DEG = "PJMEDIA_ORIENT_ROTATE_90DEG",

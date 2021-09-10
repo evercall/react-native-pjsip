@@ -9,11 +9,11 @@ interface PjSipModuleInterface {
         };
         connectivity: boolean;
     }) => void) => void;
-    stop: () => void;
+    stop: (callBack: (success: boolean) => void) => void;
     updateStunServers: (accountId: number, stunServerList: string[], callBack: (success: boolean) => void) => void;
     createAccount: (config: AccountConfiguration, callBack: (success: boolean, account: Account) => void) => void;
     registerAccount: (accountId: number, renew: boolean, callBack: (success: boolean, reason: string) => void) => void;
-    deleteAccount: (accountId: number) => void;
+    deleteAccount: (accountId: number, callBack: (success: boolean) => void) => void;
     getAccounts: (callBack: (success: boolean, data: Account[]) => void) => void;
     getAccount: (accountId: number, callBack: (success: boolean, data: Account | string) => void) => void;
     getCalls: (callBack: (success: boolean, data: CallData[]) => void) => void;
@@ -25,8 +25,8 @@ interface PjSipModuleInterface {
     unholdCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
     muteCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
     unMuteCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
-    useSpeaker: () => void;
-    useEarpiece: () => void;
+    useSpeaker: (callBack: () => void) => void;
+    useEarpiece: (callBack: () => void) => void;
     xferCall: (callId: number, destination: string, callBack: (success: boolean, reason: string) => void) => void;
     xferReplacesCall: (callId: number, destinationCallId: number, callBack: (success: boolean, reason: string) => void) => void;
     redirectCall: (callId: number, destination: string, callBack: (success: boolean, reason: string) => void) => void;

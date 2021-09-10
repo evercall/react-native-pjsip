@@ -1,4 +1,4 @@
-import AccountRegistration from './AccountRegistration'
+import AccountRegistration, { AccountRegistrationInterface } from './AccountRegistration'
 
 /**
  * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
@@ -18,20 +18,19 @@ export type AccountConfiguration = {
   regTimeout?: number,
   regContactParams?: string | null,
   regHeaders?: Object | null,
-  regOnAdd?: boolean
+  regOnAdd?: boolean,
+  registration?: AccountRegistrationInterface
 };
 
 /**
  * This describes account configuration and registration status
  */
 export default class Account {
-  _data: AccountConfiguration
+  data: AccountConfiguration
+  registration: AccountRegistration
 
-  _registration: AccountRegistration
-
-  constructor (data: any) {
-    this._data = data
-    this._registration = new AccountRegistration(data.registration)
+  constructor (data: AccountConfiguration) {
+    this.data = data
   }
 
   /**
@@ -39,7 +38,7 @@ export default class Account {
    * @returns {number}
    */
   getId (): number {
-    return this._data.id
+    return this.data.id
   }
 
   /**
@@ -47,7 +46,7 @@ export default class Account {
    * @returns {string}
    */
   getURI (): string {
-    return this._data.uri
+    return this.data.uri
   }
 
   /**
@@ -56,7 +55,7 @@ export default class Account {
    * @returns {string|null}
    */
   getName (): string | null {
-    return this._data.name
+    return this.data.name
   }
 
   /**
@@ -64,7 +63,7 @@ export default class Account {
    * @returns {string}
    */
   getUsername (): string {
-    return this._data.username
+    return this.data.username
   }
 
   /**
@@ -72,7 +71,7 @@ export default class Account {
    * @returns {string}
    */
   getDomain (): string {
-    return this._data.domain
+    return this.data.domain
   }
 
   /**
@@ -80,7 +79,7 @@ export default class Account {
    * @returns {string}
    */
   getPassword (): string {
-    return this._data.password
+    return this.data.password
   }
 
   /**
@@ -88,7 +87,7 @@ export default class Account {
    * @returns {string|null}
    */
   getProxy (): string | null {
-    return this._data.proxy
+    return this.data.proxy
   }
 
   /**
@@ -96,7 +95,7 @@ export default class Account {
    * @returns {string|null}
    */
   getTransport (): string | null {
-    return this._data.transport
+    return this.data.transport
   }
 
   /**
@@ -105,7 +104,7 @@ export default class Account {
    * @returns {string|null}
    */
   getContactParams (): string | null {
-    return this._data.contactParams
+    return this.data.contactParams
   }
 
   /**
@@ -114,7 +113,7 @@ export default class Account {
    * @returns {string|null}
    */
   getContactUriParams (): string | null {
-    return this._data.contactUriParams
+    return this.data.contactUriParams
   }
 
   /**
@@ -122,7 +121,7 @@ export default class Account {
    * @returns {string|null}
    */
   getRegServer (): string | null {
-    return this._data.regServer || ''
+    return this.data.regServer || ''
   }
 
   /**
@@ -130,21 +129,21 @@ export default class Account {
    * @returns {number}
    */
   getRegTimeout (): number {
-    return this._data.regTimeout
+    return this.data.regTimeout
   }
 
   /**
    * @returns {string|null}
    */
   getRegContactParams (): string | null {
-    return this._data.regContactParams
+    return this.data.regContactParams
   }
 
   /**
    * @returns {Object|null}
    */
   getRegHeaders (): Object | null {
-    return this._data.regHeaders
+    return this.data.regHeaders
   }
 
   /**
@@ -152,6 +151,6 @@ export default class Account {
    * @returns {AccountRegistration}
    */
   getRegistration (): AccountRegistration {
-    return this._registration
+    return this.registration
   }
 }

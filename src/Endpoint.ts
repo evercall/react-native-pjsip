@@ -128,16 +128,12 @@ export default class Endpoint extends EventEmitter {
           const accounts: Account[] = []
           const calls: Call[] = []
 
-          if (Object.prototype.hasOwnProperty.call(data, 'accounts')) {
-            for (const d of data.accounts) {
-              accounts.push(new Account(d))
-            }
+          for (const d of data.accounts) {
+            accounts.push(new Account(d))
           }
 
-          if (Object.prototype.hasOwnProperty.call(data, 'calls')) {
-            for (const e of data.calls) {
-              calls.push(new Call(e))
-            }
+          for (const e of data.calls) {
+            calls.push(new Call(e))
           }
 
           const extra = {}
@@ -199,7 +195,7 @@ export default class Endpoint extends EventEmitter {
     return new Promise((resolve, reject) => {
       PjSipModule.createAccount(configuration, (successful, data) => {
         if (successful) {
-          resolve(new Account(data))
+          resolve(new Account(<AccountConfiguration>data))
         } else {
           reject(data)
         }
@@ -271,11 +267,11 @@ export default class Endpoint extends EventEmitter {
    */
   getAccount (accountId: number): Promise<Account> {
     return new Promise((resolve, reject) => {
-      PjSipModule.getAccount(accountId, (successful, data) => {
+      PjSipModule.getAccount(accountId, (successful, accountData) => {
         if (successful) {
-          resolve(new Account(data))
+          resolve(new Account(<AccountConfiguration>accountData))
         } else {
-          reject(data)
+          reject(new Error(<string>accountData))
         }
       })
     })
@@ -300,6 +296,23 @@ export default class Endpoint extends EventEmitter {
           resolve(calls)
         } else {
           reject(data)
+        }
+      })
+    })
+  }
+
+  /**
+   * Gets an account by id
+   *
+   * @returns Promise<Account>
+   */
+  getCall (callId: number): Promise<Call> {
+    return new Promise((resolve, reject) => {
+      PjSipModule.getCall(callId, (successful, callData) => {
+        if (successful) {
+          resolve(new Call(<CallData>callData))
+        } else {
+          reject(new Error(<string>callData))
         }
       })
     })

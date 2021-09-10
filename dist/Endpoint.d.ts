@@ -156,6 +156,12 @@ export default class Endpoint extends EventEmitter {
      */
     getCalls(): Promise<Call[]>;
     /**
+     * Gets an account by id
+     *
+     * @returns Promise<Account>
+     */
+    getCall(callId: number): Promise<Call>;
+    /**
      * Make an outgoing call to the specified URI.
      *
      * @param account {Account}

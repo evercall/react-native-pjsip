@@ -1,4 +1,4 @@
-import AccountRegistration from './AccountRegistration';
+import AccountRegistration, { AccountRegistrationInterface } from './AccountRegistration';
 /**
  * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
  */
@@ -18,14 +18,15 @@ export declare type AccountConfiguration = {
     regContactParams?: string | null;
     regHeaders?: Object | null;
     regOnAdd?: boolean;
+    registration?: AccountRegistrationInterface;
 };
 /**
  * This describes account configuration and registration status
  */
 export default class Account {
-    _data: AccountConfiguration;
-    _registration: AccountRegistration;
-    constructor(data: any);
+    data: AccountConfiguration;
+    registration: AccountRegistration;
+    constructor(data: AccountConfiguration);
     /**
      * The account ID.
      * @returns {number}

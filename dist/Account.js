@@ -1,4 +1,3 @@
-import AccountRegistration from './AccountRegistration';
 /**
  * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
  */
@@ -8,8 +7,7 @@ import AccountRegistration from './AccountRegistration';
  */
 export default class Account {
   constructor(data) {
-    this._data = data;
-    this._registration = new AccountRegistration(data.registration);
+    this.data = data;
   }
   /**
    * The account ID.
@@ -18,7 +16,7 @@ export default class Account {
 
 
   getId() {
-    return this._data.id;
+    return this.data.id;
   }
   /**
    * This is the URL to be put in the request URI for the registration, and will look something like "sip:serviceprovider".
@@ -27,7 +25,7 @@ export default class Account {
 
 
   getURI() {
-    return this._data.uri;
+    return this.data.uri;
   }
   /**
    * Full name specified in Endpoint.createAccount().
@@ -37,7 +35,7 @@ export default class Account {
 
 
   getName() {
-    return this._data.name;
+    return this.data.name;
   }
   /**
    * Username specified in Endpoint.createAccount().
@@ -46,7 +44,7 @@ export default class Account {
 
 
   getUsername() {
-    return this._data.username;
+    return this.data.username;
   }
   /**
    * Domain specified in Endpoint.createAccount().
@@ -55,7 +53,7 @@ export default class Account {
 
 
   getDomain() {
-    return this._data.domain;
+    return this.data.domain;
   }
   /**
    * Password specified in Endpoint.createAccount().
@@ -64,7 +62,7 @@ export default class Account {
 
 
   getPassword() {
-    return this._data.password;
+    return this.data.password;
   }
   /**
    * Proxy specified in Endpoint.createAccount().
@@ -73,7 +71,7 @@ export default class Account {
 
 
   getProxy() {
-    return this._data.proxy;
+    return this.data.proxy;
   }
   /**
    * Transport specified in Endpoint.createAccount().
@@ -82,7 +80,7 @@ export default class Account {
 
 
   getTransport() {
-    return this._data.transport;
+    return this.data.transport;
   }
   /**
    * Additional parameters that will be appended in the Contact header
@@ -92,7 +90,7 @@ export default class Account {
 
 
   getContactParams() {
-    return this._data.contactParams;
+    return this.data.contactParams;
   }
   /**
    * Additional URI parameters that will be appended in the Contact URI
@@ -102,7 +100,7 @@ export default class Account {
 
 
   getContactUriParams() {
-    return this._data.contactUriParams;
+    return this.data.contactUriParams;
   }
   /**
    * Port specified in Endpoint.createAccount().
@@ -111,7 +109,7 @@ export default class Account {
 
 
   getRegServer() {
-    return this._data.regServer || '';
+    return this.data.regServer || '';
   }
   /**
    * Port specified in Endpoint.createAccount().
@@ -120,7 +118,7 @@ export default class Account {
 
 
   getRegTimeout() {
-    return this._data.regTimeout;
+    return this.data.regTimeout;
   }
   /**
    * @returns {string|null}
@@ -128,7 +126,7 @@ export default class Account {
 
 
   getRegContactParams() {
-    return this._data.regContactParams;
+    return this.data.regContactParams;
   }
   /**
    * @returns {Object|null}
@@ -136,7 +134,7 @@ export default class Account {
 
 
   getRegHeaders() {
-    return this._data.regHeaders;
+    return this.data.regHeaders;
   }
   /**
    * Account registration status.
@@ -145,7 +143,7 @@ export default class Account {
 
 
   getRegistration() {
-    return this._registration;
+    return this.registration;
   }
 
 }

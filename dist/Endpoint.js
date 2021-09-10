@@ -48,16 +48,12 @@ export default class Endpoint extends EventEmitter {
           const accounts = [];
           const calls = [];
 
-          if (Object.prototype.hasOwnProperty.call(data, 'accounts')) {
-            for (const d of data.accounts) {
-              accounts.push(new Account(d));
-            }
+          for (const d of data.accounts) {
+            accounts.push(new Account(d));
           }
 
-          if (Object.prototype.hasOwnProperty.call(data, 'calls')) {
-            for (const e of data.calls) {
-              calls.push(new Call(e));
-            }
+          for (const e of data.calls) {
+            calls.push(new Call(e));
           }
 
           const extra = {};
@@ -196,11 +192,11 @@ export default class Endpoint extends EventEmitter {
 
   getAccount(accountId) {
     return new Promise((resolve, reject) => {
-      PjSipModule.getAccount(accountId, (successful, data) => {
+      PjSipModule.getAccount(accountId, (successful, accountData) => {
         if (successful) {
-          resolve(new Account(data));
+          resolve(new Account(accountData));
         } else {
-          reject(data);
+          reject(new Error(accountData));
         }
       });
     });
@@ -226,6 +222,24 @@ export default class Endpoint extends EventEmitter {
           resolve(calls);
         } else {
           reject(data);
+        }
+      });
+    });
+  }
+  /**
+   * Gets an account by id
+   *
+   * @returns Promise<Account>
+   */
+
+
+  getCall(callId) {
+    return new Promise((resolve, reject) => {
+      PjSipModule.getCall(callId, (successful, callData) => {
+        if (successful) {
+          resolve(new Call(callData));
+        } else {
+          reject(new Error(callData));
         }
       });
     });

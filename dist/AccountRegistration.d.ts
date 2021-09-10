@@ -1,18 +1,19 @@
+export interface AccountRegistrationInterface {
+    status: string;
+    statusText: string;
+    active: string;
+    reason: string;
+}
 /**
  * Account registration information. Application can query the registration info
  * by calling account.getRegistration().
  */
 export default class AccountRegistration {
-    _status: string;
-    _statusText: string;
-    _active: boolean;
-    _reason: string;
-    constructor({ status, statusText, active, reason, }: {
-        status: any;
-        statusText: any;
-        active: any;
-        reason: any;
-    });
+    status: string;
+    statusText: string;
+    active: string;
+    reason: string;
+    constructor(props: AccountRegistrationInterface);
     /**
      * Last registration status code (SIP status codes according to RFC 3261).
      * If status code is empty, the account is currently not registered. Any other value indicates the SIP
@@ -31,19 +32,16 @@ export default class AccountRegistration {
      * Flag to tell whether this account is currently registered
      * (has active registration session).
      *
-     * @returns boolean
+     * TODO: This only returns the string 'Test'
+     * @returns {string} Test
      */
-    isActive(): boolean;
+    isActive(): string;
     /**
      * Reason phrase received.
      *
-     * @returns {String|null}
+     * TODO: This only returns the string 'Test'
+     * @returns {String}
      */
     getReason(): string | null;
-    toJson(): {
-        status: string;
-        statusText: string;
-        active: boolean;
-        reason: string;
-    };
+    toJson(): AccountRegistrationInterface;
 }

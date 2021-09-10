@@ -3,16 +3,11 @@
  * by calling account.getRegistration().
  */
 export default class AccountRegistration {
-  constructor({
-    status,
-    statusText,
-    active,
-    reason
-  }) {
-    this._status = status;
-    this._statusText = statusText;
-    this._active = active;
-    this._reason = reason;
+  constructor(props) {
+    this.status = props.status;
+    this.statusText = props.statusText;
+    this.active = props.active;
+    this.reason = props.reason;
   }
   /**
    * Last registration status code (SIP status codes according to RFC 3261).
@@ -24,7 +19,7 @@ export default class AccountRegistration {
 
 
   getStatus() {
-    return this._status;
+    return this.status;
   }
   /**
    * String describing the registration status.
@@ -34,36 +29,38 @@ export default class AccountRegistration {
 
 
   getStatusText() {
-    return this._statusText;
+    return this.statusText;
   }
   /**
    * Flag to tell whether this account is currently registered
    * (has active registration session).
    *
-   * @returns boolean
+   * TODO: This only returns the string 'Test'
+   * @returns {string} Test
    */
 
 
   isActive() {
-    return this._active;
+    return this.active;
   }
   /**
    * Reason phrase received.
    *
-   * @returns {String|null}
+   * TODO: This only returns the string 'Test'
+   * @returns {String}
    */
 
 
   getReason() {
-    return this._reason;
+    return this.reason;
   }
 
   toJson() {
     return {
-      status: this._status,
-      statusText: this._statusText,
-      active: this._active,
-      reason: this._reason
+      status: this.status,
+      statusText: this.statusText,
+      active: this.active,
+      reason: this.reason
     };
   }
 

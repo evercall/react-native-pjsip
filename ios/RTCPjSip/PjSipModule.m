@@ -92,10 +92,17 @@ RCT_EXPORT_METHOD(registerAccount: (int) accountId renew:(BOOL) renew callback:(
 
 #pragma mark - Call Actions
 
+RCT_EXPORT_METHOD(getCalls: (RCTResponseSenderBlock) callback) {
+    NSMutableArray *calls = [[PjSipEndpoint instance] getCalls];
+    callback(@[@TRUE, calls]);
+}
+
+
 RCT_EXPORT_METHOD(getCall: (int) callId callback:(RCTResponseSenderBlock) callback) {
     @try {
+        PjSipEndpoint* endpoint = [PjSipEndpoint instance];
         PjSipCall *call = [[PjSipEndpoint instance] findCall:callId];
-        callback(@[@TRUE, [call toJsonDictionary]]);
+        callback(@[@TRUE, [call toJsonDictionary:endpoint.isSpeaker]]);
     }
     @catch (NSException * e) {
         callback(@[@FALSE, e.reason]);

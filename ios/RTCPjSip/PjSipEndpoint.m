@@ -207,7 +207,6 @@
 }
 
 - (PjSipAccount *) findAccount: (int) accountId {
-    NSLog([NSString stringWithFormat: @"FINDING ACCOUNT WITH ID: %d", accountId]);
     return self.accounts[@(accountId)];
 }
 
@@ -225,8 +224,20 @@
 
 #pragma mark Calls
 
-- (NSMutableDictionary *) getCalls{
-    return self.calls;
+- (PjSipCall *) findCall: (int) callId {
+    return self.calls[@(callId)];
+}
+
+- (NSMutableArray *)getCalls {
+    NSMutableArray *callsResult = [[NSMutableArray alloc] initWithCapacity:[@([self.accounts count]) unsignedIntegerValue]];
+    PjSipEndpoint* endpoint = [PjSipEndpoint instance];
+
+    for (NSString *key in self.calls) {
+        PjSipCall *call = self.calls[key];
+        [callsResult addObject:[call toJsonDictionary:endpoint.isSpeaker]];
+    }
+
+    return callsResult;
 }
 
 -(PjSipCall *) makeCall:(PjSipAccount *) account destination:(NSString *)destination callSettings: (NSDictionary *)callSettingsDict msgData: (NSDictionary *)msgDataDict {
@@ -260,10 +271,6 @@
     self.calls[@(callId)] = call;
 
     return call;
-}
-
-- (PjSipCall *) findCall: (int) callId {
-    return self.calls[@(callId)];
 }
 
 -(void) pauseParallelCalls:(PjSipCall*) call {

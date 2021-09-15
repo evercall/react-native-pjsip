@@ -185,239 +185,113 @@ export interface CallData {
  * This class describes the information and current status of a call.
  */
 declare class Call {
+    /**
+     * Call identification.
+     */
     id: number;
+    /**
+     * The account ID where this call belongs.
+     */
     callId: string;
+    /**
+     * Dialog Call-ID string.
+     */
     accountId: number;
+    /**
+     * Local Contact.
+     * TODO: Provide example
+     */
     localContact: string;
+    /**
+     * Local URI.
+     * TODO: Provide example
+     */
     localUri: string;
+    /**
+     * Remote contact.
+     * TODO: Provide example
+     * @returns {String}
+     */
     remoteContact: string;
+    /**
+     * Remote URI.
+     * TODO: Provide example
+     */
     remoteUri: string;
+    /**
+     * Invite session state.
+     */
     state: PJSIPInviteState;
+    /**
+     * Text describing the state.
+     */
     stateText: string;
     connectDuration: number;
     totalDuration: number;
+    /**
+     * Last status code heard, which can be used as cause code
+     */
     lastStatusCode: PJSIPCallLastStatusCode | null;
+    /**
+     * The reason phrase describing the last status.
+     */
     lastReason: string;
     held: boolean;
     muted: boolean;
     speaker: boolean;
+    /**
+     * Flag if remote was SDP offerer
+     */
     remoteOfferer: number;
+    /**
+     * Number of audio streams offered by remote.
+     */
     remoteAudioCount: number;
+    /**
+     * Number of video streams offered by remote.
+     */
     remoteVideoCount: number;
+    /**
+     * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
+     */
     audioCount: number;
+    /**
+     * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
+     */
     videoCount: number;
     media: mediaInterface[];
     provisionalMedia: mediaInterface[];
     constructionTime: number;
     constructor(props: CallData);
     /**
-     * Call identification.
-     * @returns {int}
-     */
-    getId(): number;
-    /**
-     * The account ID where this call belongs.
-     * @returns {int}
-     */
-    getAccountId(): number;
-    /**
-     * Dialog Call-ID string.
-     *
-     * @returns {String}
-     */
-    getCallId(): string;
-    /**
      * Up-to-date call duration in seconds.
      * Use local time to calculate actual call duration.
-     *
-     * @public
-     * @returns {int}
      */
     getTotalDuration(): number;
     /**
      * Up-to-date call connected duration (zero when call is not established)
-     *
-     * @returns {int}
      */
     getConnectDuration(): number;
     /**
-     * Call duration in "MM:SS" format.
-     *
-     * @public
-     * @returns {string}
+     * Call duration in "HH:MM:SS" format.
      */
     getFormattedTotalDuration(): string;
     /**
-     * Call duration in "MM:SS" format.
-     *
-     * @public
-     * @returns {string}
+     * Call duration in "HH:MM:SS" format.
      */
     getFormattedConnectDuration(): string;
     /**
-     * Local Contact.
-     * TODO: Provide example
-     * @returns {String}
-     */
-    getLocalContact(): string;
-    /**
-     * Local URI.
-     * TODO: Provide example
-     * @returns {String}
-     */
-    getLocalUri(): string;
-    /**
-     * Remote contact.
-     * TODO: Provide example
-     * @returns {String}
-     */
-    getRemoteContact(): string;
-    /**
-     * Remote URI.
-     * TODO: Provide example
-     * @returns {String}
-     */
-    getRemoteUri(): string;
-    /**
      * Callee name. Could be null if no name specified in URI.
-     * @returns {String}
      */
     getRemoteName(): string;
     /**
      * Callee number
-     * @returns {String}
      */
     getRemoteNumber(): string;
-    /**
-     * @returns {String}
-     */
     getRemoteFormattedNumber(): string;
-    /**
-     * Invite session state.
-     *
-     * PJSIPINVSTATENULL           Before INVITE is sent or received
-     * PJSIPINVSTATECALLING        After INVITE is sent
-     * PJSIPINVSTATEINCOMING       After INVITE is received.
-     * PJSIPINVSTATEEARLY          After response with To tag.
-     * PJSIPINVSTATECONNECTING     After 2xx is sent/received.
-     * PJSIPINVSTATECONFIRMED      After ACK is sent/received.
-     * PJSIPINVSTATEDISCONNECTED   Session is terminated.
-     *
-     * @returns {String}
-     */
-    getState(): PJSIPInviteState;
-    /**
-     * Text describing the state.
-     *
-     * @returns {String}
-     */
-    getStateText(): string;
-    isHeld(): boolean;
-    isMuted(): boolean;
-    isSpeaker(): boolean;
     isTerminated(): boolean;
     /**
-     * Flag if remote was SDP offerer
-     * @returns {boolean}
-     */
-    getRemoteOfferer(): number;
-    /**
-     * Number of audio streams offered by remote.
-     * @returns {int}
-     */
-    getRemoteAudioCount(): number;
-    /**
-     * Number of video streams offered by remote.
-     * @returns {int}
-     */
-    getRemoteVideoCount(): number;
-    /**
-     * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
-     * @returns {int}
-     */
-    getAudioCount(): number;
-    /**
-     * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
-     * @returns {*}
-     */
-    getVideoCount(): number;
-    /**
-     * Last status code heard, which can be used as cause code.
-     * Possible values:
-     * - PJSIPSCTRYING / 100
-     * - PJSIPSCRINGING / 180
-     * - PJSIPSCCALLBEINGFORWARDED / 181
-     * - PJSIPSCQUEUED / 182
-     * - PJSIPSCPROGRESS / 183
-     * - PJSIPSCOK / 200
-     * - PJSIPSCACCEPTED / 202
-     * - PJSIPSCMULTIPLECHOICES / 300
-     * - PJSIPSCMOVEDPERMANENTLY / 301
-     * - PJSIPSCMOVEDTEMPORARILY / 302
-     * - PJSIPSCUSEPROXY / 305
-     * - PJSIPSCALTERNATIVESERVICE / 380
-     * - PJSIPSCBADREQUEST / 400
-     * - PJSIPSCUNAUTHORIZED / 401
-     * - PJSIPSCPAYMENTREQUIRED / 402
-     * - PJSIPSCFORBIDDEN / 403
-     * - PJSIPSCNOTFOUND / 404
-     * - PJSIPSCMETHODNOTALLOWED / 405
-     * - PJSIPSCNOTACCEPTABLE / 406
-     * - PJSIPSCPROXYAUTHENTICATIONREQUIRED / 407
-     * - PJSIPSCREQUESTTIMEOUT / 408
-     * - PJSIPSCGONE / 410
-     * - PJSIPSCREQUESTENTITYTOOLARGE / 413
-     * - PJSIPSCREQUESTURITOOLONG / 414
-     * - PJSIPSCUNSUPPORTEDMEDIATYPE / 415
-     * - PJSIPSCUNSUPPORTEDURISCHEME / 416
-     * - PJSIPSCBADEXTENSION / 420
-     * - PJSIPSCEXTENSIONREQUIRED / 421
-     * - PJSIPSCSESSIONTIMERTOOSMALL / 422
-     * - PJSIPSCINTERVALTOOBRIEF / 423
-     * - PJSIPSCTEMPORARILYUNAVAILABLE / 480
-     * - PJSIPSCCALLTSXDOESNOTEXIST / 481
-     * - PJSIPSCLOOPDETECTED / 482
-     * - PJSIPSCTOOMANYHOPS / 483
-     * - PJSIPSCADDRESSINCOMPLETE / 484
-     * - PJSIPACAMBIGUOUS / 485
-     * - PJSIPSCBUSYHERE / 486
-     * - PJSIPSCREQUESTTERMINATED / 487
-     * - PJSIPSCNOTACCEPTABLEHERE / 488
-     * - PJSIPSCBADEVENT / 489
-     * - PJSIPSCREQUESTUPDATED / 490
-     * - PJSIPSCREQUESTPENDING / 491
-     * - PJSIPSCUNDECIPHERABLE / 493
-     * - PJSIPSCINTERNALSERVERERROR / 500
-     * - PJSIPSCNOTIMPLEMENTED / 501
-     * - PJSIPSCBADGATEWAY / 502
-     * - PJSIPSCSERVICEUNAVAILABLE / 503
-     * - PJSIPSCSERVERTIMEOUT / 504
-     * - PJSIPSCVERSIONNOTSUPPORTED / 505
-     * - PJSIPSCMESSAGETOOLARGE / 513
-     * - PJSIPSCPRECONDITIONFAILURE / 580
-     * - PJSIPSCBUSYEVERYWHERE / 600
-     * - PJSIPSCDECLINE / 603
-     * - PJSIPSCDOESNOTEXISTANYWHERE / 604
-     * - PJSIPSCNOTACCEPTABLEANYWHERE / 606
-     * - PJSIPSCTSXTIMEOUT / PJSIPSCREQUESTTIMEOUT
-     * - PJSIPSCTSXTRANSPORTERROR / PJSIPSCSERVICEUNAVAILABLE
-     *
-     * @returns {string}
-     */
-    getLastStatusCode(): string;
-    /**
-     * The reason phrase describing the last status.
-     *
-     * @returns {string}
-     */
-    getLastReason(): string;
-    getMedia(): mediaInterface[];
-    getProvisionalMedia(): mediaInterface[];
-    /**
-     * Format seconds to "MM:SS" format.
-     *
-     * @public
-     * @returns {string}
+     * Format seconds to "HH:MM:SS" format.
      */
     formatTime(seconds: number): string;
 }

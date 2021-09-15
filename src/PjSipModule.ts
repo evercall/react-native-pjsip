@@ -1,11 +1,11 @@
-import { AccountConfiguration } from './Account'
+import { IAccount } from './Account'
 import { CallData, Orientation, PJSIPCallSettings, PJSIPMessageData, StartConfiguration } from './index'
 import { NativeModules } from 'react-native'
 
 interface PjSipModuleInterface {
   start: (config: StartConfiguration, callBack: (success: boolean, data: {
     calls: CallData[],
-    accounts: AccountConfiguration[],
+    accounts: IAccount[],
     settings: {
       codecs: string[]
     },
@@ -13,11 +13,11 @@ interface PjSipModuleInterface {
   }) => void) => void,
   stop: (callBack: (success: boolean) => void) => void,
   updateStunServers: (accountId: number, stunServerList: string[], callBack: (success: boolean) => void) => void;
-  createAccount: (config: AccountConfiguration, callBack: (success: boolean, account: AccountConfiguration) => void) => void;
+  createAccount: (config: IAccount, callBack: (success: boolean, account: IAccount) => void) => void;
   registerAccount: (accountId: number, renew: boolean, callBack: (success: boolean, reason: string) => void) => void;
   deleteAccount: (accountId: number, callBack: (success: boolean) => void) => void;
-  getAccounts: (callBack: (success: boolean, data: AccountConfiguration[]) => void) => void;
-  getAccount: (accountId: number, callBack: (success: boolean, data: AccountConfiguration | string) => void) => void;
+  getAccounts: (callBack: (success: boolean, data: IAccount[]) => void) => void;
+  getAccount: (accountId: number, callBack: (success: boolean, data: IAccount | string) => void) => void;
   getCalls: (callBack: (success: boolean, data: CallData[]) => void) => void;
   getCall: (callId: number, callBack: (success: boolean, data: CallData | string) => void) => void;
   makeCall: (accountId: number, destination: string, callSettings: PJSIPCallSettings, messageData: PJSIPMessageData, callBack: (success: boolean, data: CallData | string) => void) => void;

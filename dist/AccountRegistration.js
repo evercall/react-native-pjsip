@@ -3,65 +3,33 @@
  * by calling account.getRegistration().
  */
 export default class AccountRegistration {
-  constructor(props) {
-    this.status = props.status;
-    this.statusText = props.statusText;
-    this.active = props.active;
-    this.reason = props.reason;
-  }
   /**
    * Last registration status code (SIP status codes according to RFC 3261).
    * If status code is empty, the account is currently not registered. Any other value indicates the SIP
    * status code of the registration.
-   *
-   * @returns {string|null}
    */
 
-
-  getStatus() {
-    return this.status;
-  }
   /**
    * String describing the registration status.
-   *
-   * @returns {string|null}
    */
 
-
-  getStatusText() {
-    return this.statusText;
-  }
   /**
    * Flag to tell whether this account is currently registered
    * (has active registration session).
    *
    * TODO: This only returns the string 'Test'
-   * @returns {string} Test
    */
 
-
-  isActive() {
-    return this.active;
-  }
   /**
    * Reason phrase received.
    *
    * TODO: This only returns the string 'Test'
-   * @returns {String}
    */
-
-
-  getReason() {
-    return this.reason;
-  }
-
-  toJson() {
-    return {
-      status: this.status,
-      statusText: this.statusText,
-      active: this.active,
-      reason: this.reason
-    };
+  constructor(props) {
+    this.status = props.status;
+    this.statusText = props.statusText;
+    this.active = props.active;
+    this.reason = props.reason;
   }
 
 }

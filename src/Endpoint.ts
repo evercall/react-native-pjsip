@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 import PjSipModule from './PjSipModule'
 import Call, { CallData, PJSUACallFlags, PJSUAVideoReqKeyframeMethod } from './Call'
 import Message, { MessageData } from './Message'
-import Account, { AccountConfiguration } from './Account'
+import Account, { IAccount } from './Account'
 
 /**
  * @example { 'speex/8000': 1 }
@@ -115,8 +115,6 @@ export default class Endpoint extends EventEmitter {
   /**
    * Returns a Promise that will be resolved once PjSip module is initialized.
    * Do not call any function while library is not initialized.
-   *
-   * @returns {Promise}
    */
   start (configuration: StartConfiguration): Promise<{
     accounts: Account[],
@@ -174,28 +172,12 @@ export default class Endpoint extends EventEmitter {
    * Add a new account. If registration is configured for this account, this function would also start the
    * SIP registration session with the SIP registrar server. This SIP registration session will be maintained
    * internally by the library, and application doesn't need to do anything to maintain the registration session.
-   *
-   * An example configuration:
-   * {
-   *   name: "John Doe",
-   *   username: "100",
-   *   domain: "pbx.com",
-   *   password: "XXXXXX",
-   *
-   *   proxy: "192.168.100.1:5060", // default disabled.
-   *   transport: "TCP", // default TCP
-   *   regServer: "pbx.com", // default taken from domain
-   *   regTimeout: 300, // default 300
-   * }
-   *
-   * @param {Object} configuration
-   * @returns {Promise}
    */
-  createAccount (configuration: AccountConfiguration): Promise<Account> {
+  createAccount (configuration: IAccount): Promise<Account> {
     return new Promise((resolve, reject) => {
       PjSipModule.createAccount(configuration, (successful, data) => {
         if (successful) {
-          resolve(new Account(<AccountConfiguration>data))
+          resolve(new Account(<IAccount>data))
         } else {
           reject(data)
         }
@@ -207,14 +189,10 @@ export default class Endpoint extends EventEmitter {
    * Update registration or perform unregistration.
    * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
    * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
-   *
-   * @param {Account} account
-   * @param renew renew If renew argument is zero, this will start unregistration process.
-   * @returns {Promise}
    */
   registerAccount (account: Account, renew = true): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.registerAccount(account.getId(), renew, (successful, reason) => {
+      PjSipModule.registerAccount(account.id, renew, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -226,21 +204,16 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
-   *
-   * @param {Account} account
-   * @returns {Promise}
    */
   deleteAccount (account: Account): Promise<void> {
     return new Promise((resolve) => {
-      PjSipModule.deleteAccount(account.getId(), () => {})
+      PjSipModule.deleteAccount(account.id, () => {})
       resolve()
     })
   }
 
   /**
    * Gets list of all accounts
-   *
-   * @returns Promise<Account[]>
    */
   getAccounts (): Promise<Account[]> {
     return new Promise((resolve, reject) => {
@@ -262,14 +235,12 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Gets an account by id
-   *
-   * @returns Promise<Account>
    */
   getAccount (accountId: number): Promise<Account> {
     return new Promise((resolve, reject) => {
       PjSipModule.getAccount(accountId, (successful, accountData) => {
         if (successful) {
-          resolve(new Account(<AccountConfiguration>accountData))
+          resolve(new Account(<IAccount>accountData))
         } else {
           reject(new Error(<string>accountData))
         }
@@ -279,9 +250,6 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Gets list of all calls
-   * TODO: Find out how well this works. I made it while not knowing alot about Objective C.
-   *
-   * @returns Promise<Call[]>
    */
   getCalls (): Promise<Call[]> {
     return new Promise((resolve, reject) => {
@@ -303,8 +271,6 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Gets an account by id
-   *
-   * @returns Promise<Account>
    */
   getCall (callId: number): Promise<Call> {
     return new Promise((resolve, reject) => {
@@ -320,17 +286,12 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Make an outgoing call to the specified URI.
-   *
-   * @param account {Account}
-   * @param destination {String} Destination SIP URI.
-   * @param callSettings {PJSIPCallSettings} Outgoing call settings.
-   * @param msgData {PJSIPMessageData} Outgoing call additional information to be sent with outgoing SIP message.
    */
   makeCall (account: Account, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {
-      PjSipModule.makeCall(account.getId(), destination, callSettings, msgData, (successful, data) => {
+      PjSipModule.makeCall(account.id, destination, callSettings, msgData, (successful, data) => {
         if (successful) {
           resolve(new Call(<CallData>data))
         } else {
@@ -342,13 +303,10 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Send response to incoming INVITE request.
-   *
-   * @param call {Call} Call instance
-   * @returns {Promise}
    */
-  answerCall (call: Call): Promise<void> {
+  answerCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.answerCall(call.getId(), (successful, reason) => {
+      PjSipModule.answerCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -360,14 +318,11 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Hangup call by using method that is appropriate according to the call state.
-   *
-   * @param call {Call} Call instance
-   * @returns {Promise}
    */
-  hangupCall (call: Call): Promise<void> {
+  hangupCall (callId: number): Promise<void> {
     // TODO: Add possibility to pass code and reason for hangup.
     return new Promise((resolve, reject) => {
-      PjSipModule.hangupCall(call.getId(), (successful, reason) => {
+      PjSipModule.hangupCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -379,13 +334,10 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Hangup call by using Decline (603) method.
-   *
-   * @param call {Call} Call instance
-   * @returns {Promise}
    */
-  declineCall (call: Call): Promise<void> {
+  declineCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.declineCall(call.getId(), (successful, reason) => {
+      PjSipModule.declineCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -397,13 +349,10 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Put the specified call on hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is being put on hold.
-   *
-   * @param call {Call} Call instance
-   * @returns {Promise}
    */
-  holdCall (call: Call): Promise<void> {
+  holdCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.holdCall(call.getId(), (successful, reason) => {
+      PjSipModule.holdCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -415,13 +364,10 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Release the specified call from hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is resumed.
-   *
-   * @param call {Call} Call instance
-   * @returns {Promise}
    */
-  unholdCall (call: Call): Promise<void> {
+  unholdCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.unholdCall(call.getId(), (successful, reason) => {
+      PjSipModule.unholdCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -431,13 +377,9 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
-  /**
-   * @param call {Call} Call instance
-   * @returns {Promise}
-   */
-  muteCall (call: Call): Promise<void> {
+  muteCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.muteCall(call.getId(), (successful, reason) => {
+      PjSipModule.muteCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -447,13 +389,9 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
-  /**
-   * @param call {Call} Call instance
-   * @returns {Promise}
-   */
-  unMuteCall (call: Call): Promise<void> {
+  unMuteCall (callId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.unMuteCall(call.getId(), (successful, reason) => {
+      PjSipModule.unMuteCall(callId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -463,9 +401,6 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
-  /**
-   * @returns {Promise}
-   */
   useSpeaker (): Promise<void> {
     return new Promise((resolve) => {
       PjSipModule.useSpeaker(() => {})
@@ -473,9 +408,6 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
-  /**
-   * @returns {Promise}
-   */
   useEarpiece (): Promise<void> {
     return new Promise((resolve) => {
       PjSipModule.useEarpiece(() => {})
@@ -486,17 +418,12 @@ export default class Endpoint extends EventEmitter {
   /**
    * Initiate call transfer to the specified address.
    * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
-   *
-   * @param account {Account} Account associated with call.
-   * @param call {Call} The call to be transferred.
-   * @param destination URI of new target to be contacted. The URI may be in name address or addr-spec format.
-   * @returns {Promise}
    */
-  xferCall (account: Account, call: Call, destination: string): Promise<void> {
+  xferCall (account: Account, callId: number, destination: string): Promise<void> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {
-      PjSipModule.xferCall(call.getId(), destination, (successful, reason) => {
+      PjSipModule.xferCall(callId, destination, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -510,14 +437,10 @@ export default class Endpoint extends EventEmitter {
    * Initiate attended call transfer.
    * This function will send REFER request to instruct remote call party to initiate new INVITE session to the URL of destCall.
    * The party at destCall then should "replace" the call with us with the new call from the REFER recipient.
-   *
-   * @param call {Call} The call to be transferred.
-   * @param destCall {Call} The call to be transferred.
-   * @returns {Promise}
    */
-  xferReplacesCall (call: Call, destCall: Call): Promise<void> {
+  xferReplacesCall (callId: number, destCallId: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.xferReplacesCall(call.getId(), destCall.getId(), (successful, reason) => {
+      PjSipModule.xferReplacesCall(callId, destCallId, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -530,17 +453,12 @@ export default class Endpoint extends EventEmitter {
   /**
    * Redirect (forward) specified call to destination.
    * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
-   *
-   * @param account {Account} Account associated with call.
-   * @param call {Call} The call to be transferred.
-   * @param destination URI of new target to be contacted. The URI may be in name address or addr-spec format.
-   * @returns {Promise}
    */
-  redirectCall (account: Account, call: Call, destination: string): Promise<void> {
+  redirectCall (account: Account, callId: number, destination: string): Promise<void> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {
-      PjSipModule.redirectCall(call.getId(), destination, (successful, reason) => {
+      PjSipModule.redirectCall(callId, destination, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -552,14 +470,10 @@ export default class Endpoint extends EventEmitter {
 
   /**
    * Send DTMF digits to remote using RFC 2833 payload formats.
-   *
-   * @param call {Call} Call instance
-   * @param digits {String} DTMF string digits to be sent as described on RFC 2833 section 3.10.
-   * @returns {Promise}
    */
-  dtmfCall (call: Call, digits: string): Promise<void> {
+  dtmfCall (callId: number, digits: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      PjSipModule.dtmfCall(call.getId(), digits, (successful, reason) => {
+      PjSipModule.dtmfCall(callId, digits, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
@@ -607,7 +521,7 @@ export default class Endpoint extends EventEmitter {
    * @private
    * @param data {Object}
    */
-  _onRegistrationChanged (data: AccountConfiguration): void {
+  _onRegistrationChanged (data: IAccount): void {
     /**
      * Fires when registration status has changed.
      *
@@ -715,10 +629,10 @@ export default class Endpoint extends EventEmitter {
    */
   _normalize (account: Account, destination: string): string {
     if (!destination.startsWith('sip:')) {
-      let realm = account.getProxy()
+      let realm = account.proxy
 
       if (realm === null) {
-        realm = account.getDomain()
+        realm = account.domain
 
         destination = `sip:${destination}@${realm}`
       }

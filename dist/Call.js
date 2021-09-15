@@ -103,6 +103,74 @@ export let PJSIPInviteState;
  * This class describes the information and current status of a call.
  */
 class Call {
+  /**
+   * Call identification.
+   */
+
+  /**
+   * The account ID where this call belongs.
+   */
+
+  /**
+   * Dialog Call-ID string.
+   */
+
+  /**
+   * Local Contact.
+   * TODO: Provide example
+   */
+
+  /**
+   * Local URI.
+   * TODO: Provide example
+   */
+
+  /**
+   * Remote contact.
+   * TODO: Provide example
+   * @returns {String}
+   */
+
+  /**
+   * Remote URI.
+   * TODO: Provide example
+   */
+
+  /**
+   * Invite session state.
+   */
+
+  /**
+   * Text describing the state.
+   */
+
+  /**
+   * Last status code heard, which can be used as cause code
+   */
+
+  /**
+   * The reason phrase describing the last status.
+   */
+
+  /**
+   * Flag if remote was SDP offerer
+   */
+
+  /**
+   * Number of audio streams offered by remote.
+   */
+
+  /**
+   * Number of video streams offered by remote.
+   */
+
+  /**
+   * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
+   */
+
+  /**
+   * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
+   */
   constructor(props) {
     this.id = props.id;
     this.callId = props.callId;
@@ -130,39 +198,8 @@ class Call {
     this.constructionTime = Math.round(new Date().getTime() / 1000);
   }
   /**
-   * Call identification.
-   * @returns {int}
-   */
-
-
-  getId() {
-    return this.id;
-  }
-  /**
-   * The account ID where this call belongs.
-   * @returns {int}
-   */
-
-
-  getAccountId() {
-    return this.accountId;
-  }
-  /**
-   * Dialog Call-ID string.
-   *
-   * @returns {String}
-   */
-
-
-  getCallId() {
-    return this.callId;
-  }
-  /**
    * Up-to-date call duration in seconds.
    * Use local time to calculate actual call duration.
-   *
-   * @public
-   * @returns {int}
    */
 
 
@@ -173,8 +210,6 @@ class Call {
   }
   /**
    * Up-to-date call connected duration (zero when call is not established)
-   *
-   * @returns {int}
    */
 
 
@@ -188,10 +223,7 @@ class Call {
     return this.connectDuration + offset;
   }
   /**
-   * Call duration in "MM:SS" format.
-   *
-   * @public
-   * @returns {string}
+   * Call duration in "HH:MM:SS" format.
    */
 
 
@@ -199,10 +231,7 @@ class Call {
     return this.formatTime(this.getTotalDuration());
   }
   /**
-   * Call duration in "MM:SS" format.
-   *
-   * @public
-   * @returns {string}
+   * Call duration in "HH:MM:SS" format.
    */
 
 
@@ -210,48 +239,7 @@ class Call {
     return this.formatTime(this.getConnectDuration());
   }
   /**
-   * Local Contact.
-   * TODO: Provide example
-   * @returns {String}
-   */
-
-
-  getLocalContact() {
-    return this.localContact;
-  }
-  /**
-   * Local URI.
-   * TODO: Provide example
-   * @returns {String}
-   */
-
-
-  getLocalUri() {
-    return this.localUri;
-  }
-  /**
-   * Remote contact.
-   * TODO: Provide example
-   * @returns {String}
-   */
-
-
-  getRemoteContact() {
-    return this.remoteContact;
-  }
-  /**
-   * Remote URI.
-   * TODO: Provide example
-   * @returns {String}
-   */
-
-
-  getRemoteUri() {
-    return this.remoteUri;
-  }
-  /**
    * Callee name. Could be null if no name specified in URI.
-   * @returns {String}
    */
 
 
@@ -270,7 +258,6 @@ class Call {
   }
   /**
    * Callee number
-   * @returns {String}
    */
 
 
@@ -293,10 +280,6 @@ class Call {
 
     return remoteNumber;
   }
-  /**
-   * @returns {String}
-   */
-
 
   getRemoteFormattedNumber() {
     if (this.getRemoteName() && this.getRemoteNumber()) {
@@ -307,206 +290,17 @@ class Call {
       return this.remoteUri;
     }
   }
-  /**
-   * Invite session state.
-   *
-   * PJSIPINVSTATENULL           Before INVITE is sent or received
-   * PJSIPINVSTATECALLING        After INVITE is sent
-   * PJSIPINVSTATEINCOMING       After INVITE is received.
-   * PJSIPINVSTATEEARLY          After response with To tag.
-   * PJSIPINVSTATECONNECTING     After 2xx is sent/received.
-   * PJSIPINVSTATECONFIRMED      After ACK is sent/received.
-   * PJSIPINVSTATEDISCONNECTED   Session is terminated.
-   *
-   * @returns {String}
-   */
-
-
-  getState() {
-    return this.state;
-  }
-  /**
-   * Text describing the state.
-   *
-   * @returns {String}
-   */
-
-
-  getStateText() {
-    return this.stateText;
-  }
-
-  isHeld() {
-    return this.held;
-  }
-
-  isMuted() {
-    return this.muted;
-  }
-
-  isSpeaker() {
-    return this.speaker;
-  }
 
   isTerminated() {
     return this.state === PJSIPInviteState.PJSIPInvStateDisconnected;
   }
   /**
-   * Flag if remote was SDP offerer
-   * @returns {boolean}
-   */
-
-
-  getRemoteOfferer() {
-    // TODO Verify whether boolean value
-    return this.remoteOfferer;
-  }
-  /**
-   * Number of audio streams offered by remote.
-   * @returns {int}
-   */
-
-
-  getRemoteAudioCount() {
-    return this.remoteAudioCount;
-  }
-  /**
-   * Number of video streams offered by remote.
-   * @returns {int}
-   */
-
-
-  getRemoteVideoCount() {
-    return this.remoteVideoCount;
-  }
-  /**
-   * Number of simultaneous active audio streams for this call. If zero - audio is disabled in this call.
-   * @returns {int}
-   */
-
-
-  getAudioCount() {
-    return this.audioCount;
-  }
-  /**
-   * Number of simultaneous active video streams for this call. If zero - video is disabled in this call.
-   * @returns {*}
-   */
-
-
-  getVideoCount() {
-    return this.videoCount;
-  }
-  /**
-   * Last status code heard, which can be used as cause code.
-   * Possible values:
-   * - PJSIPSCTRYING / 100
-   * - PJSIPSCRINGING / 180
-   * - PJSIPSCCALLBEINGFORWARDED / 181
-   * - PJSIPSCQUEUED / 182
-   * - PJSIPSCPROGRESS / 183
-   * - PJSIPSCOK / 200
-   * - PJSIPSCACCEPTED / 202
-   * - PJSIPSCMULTIPLECHOICES / 300
-   * - PJSIPSCMOVEDPERMANENTLY / 301
-   * - PJSIPSCMOVEDTEMPORARILY / 302
-   * - PJSIPSCUSEPROXY / 305
-   * - PJSIPSCALTERNATIVESERVICE / 380
-   * - PJSIPSCBADREQUEST / 400
-   * - PJSIPSCUNAUTHORIZED / 401
-   * - PJSIPSCPAYMENTREQUIRED / 402
-   * - PJSIPSCFORBIDDEN / 403
-   * - PJSIPSCNOTFOUND / 404
-   * - PJSIPSCMETHODNOTALLOWED / 405
-   * - PJSIPSCNOTACCEPTABLE / 406
-   * - PJSIPSCPROXYAUTHENTICATIONREQUIRED / 407
-   * - PJSIPSCREQUESTTIMEOUT / 408
-   * - PJSIPSCGONE / 410
-   * - PJSIPSCREQUESTENTITYTOOLARGE / 413
-   * - PJSIPSCREQUESTURITOOLONG / 414
-   * - PJSIPSCUNSUPPORTEDMEDIATYPE / 415
-   * - PJSIPSCUNSUPPORTEDURISCHEME / 416
-   * - PJSIPSCBADEXTENSION / 420
-   * - PJSIPSCEXTENSIONREQUIRED / 421
-   * - PJSIPSCSESSIONTIMERTOOSMALL / 422
-   * - PJSIPSCINTERVALTOOBRIEF / 423
-   * - PJSIPSCTEMPORARILYUNAVAILABLE / 480
-   * - PJSIPSCCALLTSXDOESNOTEXIST / 481
-   * - PJSIPSCLOOPDETECTED / 482
-   * - PJSIPSCTOOMANYHOPS / 483
-   * - PJSIPSCADDRESSINCOMPLETE / 484
-   * - PJSIPACAMBIGUOUS / 485
-   * - PJSIPSCBUSYHERE / 486
-   * - PJSIPSCREQUESTTERMINATED / 487
-   * - PJSIPSCNOTACCEPTABLEHERE / 488
-   * - PJSIPSCBADEVENT / 489
-   * - PJSIPSCREQUESTUPDATED / 490
-   * - PJSIPSCREQUESTPENDING / 491
-   * - PJSIPSCUNDECIPHERABLE / 493
-   * - PJSIPSCINTERNALSERVERERROR / 500
-   * - PJSIPSCNOTIMPLEMENTED / 501
-   * - PJSIPSCBADGATEWAY / 502
-   * - PJSIPSCSERVICEUNAVAILABLE / 503
-   * - PJSIPSCSERVERTIMEOUT / 504
-   * - PJSIPSCVERSIONNOTSUPPORTED / 505
-   * - PJSIPSCMESSAGETOOLARGE / 513
-   * - PJSIPSCPRECONDITIONFAILURE / 580
-   * - PJSIPSCBUSYEVERYWHERE / 600
-   * - PJSIPSCDECLINE / 603
-   * - PJSIPSCDOESNOTEXISTANYWHERE / 604
-   * - PJSIPSCNOTACCEPTABLEANYWHERE / 606
-   * - PJSIPSCTSXTIMEOUT / PJSIPSCREQUESTTIMEOUT
-   * - PJSIPSCTSXTRANSPORTERROR / PJSIPSCSERVICEUNAVAILABLE
-   *
-   * @returns {string}
-   */
-
-
-  getLastStatusCode() {
-    return this.lastStatusCode;
-  }
-  /**
-   * The reason phrase describing the last status.
-   *
-   * @returns {string}
-   */
-
-
-  getLastReason() {
-    return this.lastReason;
-  }
-
-  getMedia() {
-    return this.media;
-  }
-
-  getProvisionalMedia() {
-    return this.provisionalMedia;
-  }
-  /**
-   * Format seconds to "MM:SS" format.
-   *
-   * @public
-   * @returns {string}
+   * Format seconds to "HH:MM:SS" format.
    */
 
 
   formatTime(seconds) {
-    if (isNaN(seconds) || seconds < 0) {
-      return '00:00';
-    }
-
-    const hours = parseInt(String(seconds / 3600)) % 24;
-    const minutes = parseInt(String(seconds / 60)) % 60;
-    let result = '';
-    seconds = seconds % 60;
-
-    if (hours > 0) {
-      result += (hours < 10 ? '0' + hours : hours) + ':';
-    }
-
-    result += (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-    return result;
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
   }
 
 }

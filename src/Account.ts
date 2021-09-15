@@ -1,9 +1,6 @@
-import AccountRegistration, { AccountRegistrationInterface } from './AccountRegistration'
+import { IAccountRegistration } from './AccountRegistration'
 
-/**
- * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
- */
-export type AccountConfiguration = {
+export interface IAccount {
   id?: number,
   uri?: string,
   name?: string | null,
@@ -19,138 +16,88 @@ export type AccountConfiguration = {
   regContactParams?: string | null,
   regHeaders?: Object | null,
   regOnAdd?: boolean,
-  registration?: AccountRegistrationInterface
-};
+  registration?: IAccountRegistration
+}
 
 /**
  * This describes account configuration and registration status
  */
 export default class Account {
-  data: AccountConfiguration
-  registration: AccountRegistration
-
-  constructor (data: AccountConfiguration) {
-    this.data = data
-  }
-
   /**
    * The account ID.
-   * @returns {number}
    */
-  getId (): number {
-    return this.data.id
-  }
-
+  id: number | undefined
   /**
    * This is the URL to be put in the request URI for the registration, and will look something like "sip:serviceprovider".
-   * @returns {string}
    */
-  getURI (): string {
-    return this.data.uri
-  }
-
+  uri: string | undefined
   /**
    * Full name specified in Endpoint.createAccount().
    * If this value has been set to null, then it will return "sip:" + this.getDomain
-   * @returns {string|null}
    */
-  getName (): string | null {
-    return this.data.name
-  }
-
+  name: string | null | undefined
   /**
    * Username specified in Endpoint.createAccount().
-   * @returns {string}
    */
-  getUsername (): string {
-    return this.data.username
-  }
-
+  username: string
   /**
    * Domain specified in Endpoint.createAccount().
-   * @returns {string}
    */
-  getDomain (): string {
-    return this.data.domain
-  }
-
+  domain: string
   /**
    * Password specified in Endpoint.createAccount().
-   * @returns {string}
    */
-  getPassword (): string {
-    return this.data.password
-  }
-
+  password: string
   /**
    * Proxy specified in Endpoint.createAccount().
-   * @returns {string|null}
    */
-  getProxy (): string | null {
-    return this.data.proxy
-  }
-
+  proxy: string | null | undefined
   /**
    * Transport specified in Endpoint.createAccount().
-   * @returns {string|null}
    */
-  getTransport (): string | null {
-    return this.data.transport
-  }
-
+  transport: string | null | undefined
   /**
    * Additional parameters that will be appended in the Contact header
    * for this account.
-   * @returns {string|null}
    */
-  getContactParams (): string | null {
-    return this.data.contactParams
-  }
-
+  contactParams: string | null | undefined
   /**
    * Additional URI parameters that will be appended in the Contact URI
    * for this account.
-   * @returns {string|null}
    */
-  getContactUriParams (): string | null {
-    return this.data.contactUriParams
-  }
-
+  contactUriParams: string | null | undefined
   /**
    * Port specified in Endpoint.createAccount().
-   * @returns {string|null}
    */
-  getRegServer (): string | null {
-    return this.data.regServer || ''
-  }
-
+  regServer: string | null | undefined
   /**
    * Port specified in Endpoint.createAccount().
-   * @returns {number}
    */
-  getRegTimeout (): number {
-    return this.data.regTimeout
-  }
-
-  /**
-   * @returns {string|null}
-   */
-  getRegContactParams (): string | null {
-    return this.data.regContactParams
-  }
-
-  /**
-   * @returns {Object|null}
-   */
-  getRegHeaders (): Object | null {
-    return this.data.regHeaders
-  }
-
+  regTimeout: number | undefined
+  regContactParams: string | null | undefined
+  regHeaders: Object | null | undefined
+  regOnAdd: boolean | undefined
   /**
    * Account registration status.
-   * @returns {AccountRegistration}
    */
-  getRegistration (): AccountRegistration {
-    return this.registration
+  registration: IAccountRegistration | undefined
+
+  constructor (props: IAccount) {
+    this.id = props.id
+    this.uri = props.uri
+    this.name = props.name
+    this.username = props.username
+    this.domain = props.domain
+    this.password = props.password
+    this.proxy = props.proxy
+    this.transport = props.transport
+    this.contactParams = props.contactParams
+    this.contactUriParams = props.contactUriParams
+    this.regServer = props.regServer
+    this.regTimeout = props.regTimeout
+    this.regContactParams = props.regContactParams
+    this.regHeaders = props.regHeaders
+    this.regOnAdd = props.regOnAdd
+    this.registration = props.registration
   }
 }

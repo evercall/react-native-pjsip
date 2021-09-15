@@ -1,8 +1,5 @@
-import AccountRegistration, { AccountRegistrationInterface } from './AccountRegistration';
-/**
- * URI: If this value has been set to null, then it will return ´"sip:" + this.getDomain´
- */
-export declare type AccountConfiguration = {
+import { IAccountRegistration } from './AccountRegistration';
+export interface IAccount {
     id?: number;
     uri?: string;
     name?: string | null;
@@ -18,89 +15,69 @@ export declare type AccountConfiguration = {
     regContactParams?: string | null;
     regHeaders?: Object | null;
     regOnAdd?: boolean;
-    registration?: AccountRegistrationInterface;
-};
+    registration?: IAccountRegistration;
+}
 /**
  * This describes account configuration and registration status
  */
 export default class Account {
-    data: AccountConfiguration;
-    registration: AccountRegistration;
-    constructor(data: AccountConfiguration);
     /**
      * The account ID.
-     * @returns {number}
      */
-    getId(): number;
+    id: number | undefined;
     /**
      * This is the URL to be put in the request URI for the registration, and will look something like "sip:serviceprovider".
-     * @returns {string}
      */
-    getURI(): string;
+    uri: string | undefined;
     /**
      * Full name specified in Endpoint.createAccount().
      * If this value has been set to null, then it will return "sip:" + this.getDomain
-     * @returns {string|null}
      */
-    getName(): string | null;
+    name: string | null | undefined;
     /**
      * Username specified in Endpoint.createAccount().
-     * @returns {string}
      */
-    getUsername(): string;
+    username: string;
     /**
      * Domain specified in Endpoint.createAccount().
-     * @returns {string}
      */
-    getDomain(): string;
+    domain: string;
     /**
      * Password specified in Endpoint.createAccount().
-     * @returns {string}
      */
-    getPassword(): string;
+    password: string;
     /**
      * Proxy specified in Endpoint.createAccount().
-     * @returns {string|null}
      */
-    getProxy(): string | null;
+    proxy: string | null | undefined;
     /**
      * Transport specified in Endpoint.createAccount().
-     * @returns {string|null}
      */
-    getTransport(): string | null;
+    transport: string | null | undefined;
     /**
      * Additional parameters that will be appended in the Contact header
      * for this account.
-     * @returns {string|null}
      */
-    getContactParams(): string | null;
+    contactParams: string | null | undefined;
     /**
      * Additional URI parameters that will be appended in the Contact URI
      * for this account.
-     * @returns {string|null}
      */
-    getContactUriParams(): string | null;
+    contactUriParams: string | null | undefined;
     /**
      * Port specified in Endpoint.createAccount().
-     * @returns {string|null}
      */
-    getRegServer(): string | null;
+    regServer: string | null | undefined;
     /**
      * Port specified in Endpoint.createAccount().
-     * @returns {number}
      */
-    getRegTimeout(): number;
-    /**
-     * @returns {string|null}
-     */
-    getRegContactParams(): string | null;
-    /**
-     * @returns {Object|null}
-     */
-    getRegHeaders(): Object | null;
+    regTimeout: number | undefined;
+    regContactParams: string | null | undefined;
+    regHeaders: Object | null | undefined;
+    regOnAdd: boolean | undefined;
     /**
      * Account registration status.
-     * @returns {AccountRegistration}
      */
-    getRegistration(): AccountRegistration;
+    registration: IAccountRegistration | undefined;
+    constructor(props: IAccount);
 }

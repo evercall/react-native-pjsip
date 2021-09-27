@@ -2,7 +2,7 @@ export interface IAccountRegistration {
   status: string,
   statusText: string,
   active: string,
-  reason: string
+  expires: number
 }
 
 /**
@@ -32,12 +32,12 @@ export default class AccountRegistration {
    *
    * TODO: This only returns the string 'Test'
    */
-  reason: string
+  expires: number
 
   constructor (props: IAccountRegistration) {
     this.status = props.status
     this.statusText = props.statusText
     this.active = props.active
-    this.reason = props.reason
+    this.expires = props.expires
   }
 }

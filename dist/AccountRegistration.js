@@ -29,7 +29,7 @@ export default class AccountRegistration {
     this.status = props.status;
     this.statusText = props.statusText;
     this.active = props.active;
-    this.reason = props.reason;
+    this.expires = props.expires;
   }
 
 }

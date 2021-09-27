@@ -78,7 +78,7 @@ public class PjSipAccount extends Account {
             registration.put("status", getInfo().getRegStatus());
             registration.put("statusText", getInfo().getRegStatusText());
             registration.put("active", getInfo().getRegIsActive());
-            registration.put("reason", reason);
+            registration.put("reason", getInfo().getRegExpiresSec());
 
             json.put("id", getId());
             json.put("uri", getInfo().getUri());

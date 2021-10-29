@@ -19,6 +19,7 @@
 		DD8F1BDB1F58910A00714D48 /* PjSipVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8F1BDA1F58910A00714D48 /* PjSipVideo.m */; };
 		DD8F1BDE1F5895D900714D48 /* PjSipRemoteVideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8F1BDD1F5895D900714D48 /* PjSipRemoteVideoViewManager.m */; };
 		DD8F1BE11F58974C00714D48 /* PjSipPreviewVideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8F1BE01F58974C00714D48 /* PjSipPreviewVideoViewManager.m */; };
+		ED1E1FB00C20B9ED0A4C8312 /* libPods-RTCPjSip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F14A9F086AB12616020AF68F /* libPods-RTCPjSip.a */; };
 		FD906A282012546C0066368D /* VialerPJSIP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD906A272012546C0066368D /* VialerPJSIP.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		237E27511003241FC184F5A6 /* Pods-RTCPjSip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTCPjSip.release.xcconfig"; path = "Target Support Files/Pods-RTCPjSip/Pods-RTCPjSip.release.xcconfig"; sourceTree = "<group>"; };
+		567A4BC355EF11A6D0FE5D34 /* Pods-RTCPjSip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTCPjSip.debug.xcconfig"; path = "Target Support Files/Pods-RTCPjSip/Pods-RTCPjSip.debug.xcconfig"; sourceTree = "<group>"; };
 		A61DD9FA1E66BE9300278F2D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A6259A821E6988470089146B /* PjSipMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PjSipMessage.h; sourceTree = "<group>"; };
 		A6259A851E69889E0089146B /* PjSipMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PjSipMessage.m; sourceTree = "<group>"; };
@@ -57,6 +60,7 @@
 		DD8F1BDF1F58974100714D48 /* PjSipPreviewVideoViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PjSipPreviewVideoViewManager.h; sourceTree = "<group>"; };
 		DD8F1BE01F58974C00714D48 /* PjSipPreviewVideoViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PjSipPreviewVideoViewManager.m; sourceTree = "<group>"; };
 		DDFF87521D79D6F50096A8BE /* libRTCPjSip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTCPjSip.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F14A9F086AB12616020AF68F /* libPods-RTCPjSip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTCPjSip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD906A272012546C0066368D /* VialerPJSIP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VialerPJSIP.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,12 +73,23 @@
 				A6D8F1201E65E482007D5702 /* CallKit.framework in Frameworks */,
 				FD906A282012546C0066368D /* VialerPJSIP.framework in Frameworks */,
 				A6D3BE311E6845AF00949DCF /* VialerPJSIP in Frameworks */,
+				ED1E1FB00C20B9ED0A4C8312 /* libPods-RTCPjSip.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97656BF69B1CA32F60982462 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				567A4BC355EF11A6D0FE5D34 /* Pods-RTCPjSip.debug.xcconfig */,
+				237E27511003241FC184F5A6 /* Pods-RTCPjSip.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		A6A12F5D1E65A8400002151D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +97,7 @@
 				FD906A272012546C0066368D /* VialerPJSIP.framework */,
 				A61DD9FA1E66BE9300278F2D /* AVFoundation.framework */,
 				A6D8F11F1E65E482007D5702 /* CallKit.framework */,
+				F14A9F086AB12616020AF68F /* libPods-RTCPjSip.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,6 +133,7 @@
 				A6D0E0DF1E38B1AC0062C9B3 /* RTCPjSip */,
 				DDFF87531D79D6F50096A8BE /* Products */,
 				A6A12F5D1E65A8400002151D /* Frameworks */,
+				97656BF69B1CA32F60982462 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +152,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DDFF875B1D79D6F50096A8BE /* Build configuration list for PBXNativeTarget "RTCPjSip" */;
 			buildPhases = (
+				AF0DBCC8F38ADB2468F5F314 /* [CP] Check Pods Manifest.lock */,
 				DDFF874E1D79D6F50096A8BE /* Sources */,
 				DDFF874F1D79D6F50096A8BE /* Frameworks */,
 				DDFF87501D79D6F50096A8BE /* CopyFiles */,
@@ -179,6 +197,31 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AF0DBCC8F38ADB2468F5F314 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RTCPjSip-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DDFF874E1D79D6F50096A8BE /* Sources */ = {
@@ -275,13 +318,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
 				USE_HEADERMAP = NO;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		DDFF875C1D79D6F50096A8BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 567A4BC355EF11A6D0FE5D34 /* Pods-RTCPjSip.debug.xcconfig */;
 			buildSettings = {
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -310,6 +354,7 @@
 		};
 		DDFF875D1D79D6F50096A8BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 237E27511003241FC184F5A6 /* Pods-RTCPjSip.release.xcconfig */;
 			buildSettings = {
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

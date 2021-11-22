@@ -287,7 +287,7 @@ export default class Endpoint extends EventEmitter {
   /**
    * Make an outgoing call to the specified URI.
    */
-  makeCall (account: Account, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call> {
+  makeCall (account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {
@@ -454,7 +454,7 @@ export default class Endpoint extends EventEmitter {
    * Redirect (forward) specified call to destination.
    * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
    */
-  redirectCall (account: Account, callId: number, destination: string): Promise<void> {
+  redirectCall (account: IAccount, callId: number, destination: string): Promise<void> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {
@@ -627,7 +627,7 @@ export default class Endpoint extends EventEmitter {
    * @returns {string}
    * @private
    */
-  _normalize (account: Account, destination: string): string {
+  _normalize (account: IAccount, destination: string): string {
     if (!destination.startsWith('sip:')) {
       let realm = account.proxy
 

@@ -190,7 +190,7 @@ export default class Endpoint extends EventEmitter {
    * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
    * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
    */
-  registerAccount (account: Account, renew = true): Promise<void> {
+  registerAccount (account: IAccount, renew = true): Promise<void> {
     return new Promise((resolve, reject) => {
       PjSipModule.registerAccount(account.id, renew, (successful, reason) => {
         if (successful) {
@@ -205,7 +205,7 @@ export default class Endpoint extends EventEmitter {
   /**
    * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
    */
-  deleteAccount (account: Account): Promise<void> {
+  deleteAccount (account: IAccount): Promise<void> {
     return new Promise((resolve) => {
       PjSipModule.deleteAccount(account.id, () => {})
       resolve()
@@ -419,7 +419,7 @@ export default class Endpoint extends EventEmitter {
    * Initiate call transfer to the specified address.
    * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
    */
-  xferCall (account: Account, callId: number, destination: string): Promise<void> {
+  xferCall (account: IAccount, callId: number, destination: string): Promise<void> {
     destination = this._normalize(account, destination)
 
     return new Promise((resolve, reject) => {

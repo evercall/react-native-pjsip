@@ -9,7 +9,7 @@ export interface IAccountRegistration {
  * Account registration information. Application can query the registration info
  * by calling account.getRegistration().
  */
-export default class AccountRegistration {
+export default class AccountRegistration implements IAccountRegistration {
   /**
    * Last registration status code (SIP status codes according to RFC 3261).
    * If status code is empty, the account is currently not registered. Any other value indicates the SIP

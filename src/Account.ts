@@ -22,7 +22,7 @@ export interface IAccount {
 /**
  * This describes account configuration and registration status
  */
-export default class Account {
+export default class Account implements IAccount {
   /**
    * The account ID.
    */

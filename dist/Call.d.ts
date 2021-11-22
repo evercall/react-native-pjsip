@@ -184,7 +184,7 @@ export interface CallData {
 /**
  * This class describes the information and current status of a call.
  */
-declare class Call {
+declare class Call implements CallData {
     /**
      * Call identification.
      */

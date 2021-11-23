@@ -106,11 +106,11 @@ export default class Endpoint extends EventEmitter {
      * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
      * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
      */
-    registerAccount(account: Account, renew?: boolean): Promise<void>;
+    registerAccount(account: IAccount, renew?: boolean): Promise<void>;
     /**
      * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
      */
-    deleteAccount(account: Account): Promise<void>;
+    deleteAccount(account: IAccount): Promise<void>;
     /**
      * Gets list of all accounts
      */
@@ -130,7 +130,7 @@ export default class Endpoint extends EventEmitter {
     /**
      * Make an outgoing call to the specified URI.
      */
-    makeCall(account: Account, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call>;
+    makeCall(account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call>;
     /**
      * Send response to incoming INVITE request.
      */
@@ -159,7 +159,7 @@ export default class Endpoint extends EventEmitter {
      * Initiate call transfer to the specified address.
      * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
      */
-    xferCall(account: Account, callId: number, destination: string): Promise<void>;
+    xferCall(account: IAccount, callId: number, destination: string): Promise<void>;
     /**
      * Initiate attended call transfer.
      * This function will send REFER request to instruct remote call party to initiate new INVITE session to the URL of destCall.
@@ -170,7 +170,7 @@ export default class Endpoint extends EventEmitter {
      * Redirect (forward) specified call to destination.
      * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
      */
-    redirectCall(account: Account, callId: number, destination: string): Promise<void>;
+    redirectCall(account: IAccount, callId: number, destination: string): Promise<void>;
     /**
      * Send DTMF digits to remote using RFC 2833 payload formats.
      */
@@ -229,5 +229,5 @@ export default class Endpoint extends EventEmitter {
      * @returns {string}
      * @private
      */
-    _normalize(account: Account, destination: string): string;
+    _normalize(account: IAccount, destination: string): string;
 }

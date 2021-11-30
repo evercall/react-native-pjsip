@@ -157,8 +157,10 @@
 
     // Format registration status
     NSDictionary * registration = @{
-        @"status": [PjSipUtil toString:(pj_str_t *) pjsip_get_status_text(info.status)],
-        @"statusText": [PjSipUtil toString:&info.status_text],
+        @"status": @(info.status),
+        @"statusText": [PjSipUtil toString:(pj_str_t *) pjsip_get_status_text(info.status)],
+        @"regLastErr": @(info.reg_last_err),
+        @"regLastErrText": [PjSipUtil toString:(pj_str_t *) pjsip_get_status_text(info.reg_last_err)],
         @"active": @(info.has_registration),
         @"expires": @(info.expires)
     };
@@ -178,7 +180,6 @@
         @"regTimeout": self.regTimeout,
         @"regContactParams": self.regContactParams,
         @"regHeaders": self.regHeaders,
-
         @"registration": registration
     };
 }

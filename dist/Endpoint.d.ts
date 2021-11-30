@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Call, { CallData, PJSUACallFlags, PJSUAVideoReqKeyframeMethod } from './Call';
 import { MessageData } from './Message';
-import Account, { IAccount } from './Account';
+import Account, { IAccount, IAccountConfig } from './Account';
 /**
  * @example { 'speex/8000': 1 }
  */
@@ -100,7 +100,7 @@ export default class Endpoint extends EventEmitter {
      * SIP registration session with the SIP registrar server. This SIP registration session will be maintained
      * internally by the library, and application doesn't need to do anything to maintain the registration session.
      */
-    createAccount(configuration: IAccount): Promise<Account>;
+    createAccount(configuration: IAccountConfig): Promise<Account>;
     /**
      * Update registration or perform unregistration.
      * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.

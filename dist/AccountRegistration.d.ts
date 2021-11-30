@@ -1,6 +1,8 @@
 export interface IAccountRegistration {
     status: string;
     statusText: string;
+    regLastErr: string;
+    regLastErrText: string;
     active: string;
     expires: number;
 }
@@ -19,6 +21,16 @@ export default class AccountRegistration implements IAccountRegistration {
      * String describing the registration status.
      */
     statusText: string;
+    /**
+     * Last registration status code (SIP status codes according to RFC 3261).
+     * If status code is empty, the account is currently not registered. Any other value indicates the SIP
+     * status code of the registration.
+     */
+    regLastErr: string;
+    /**
+     * String describing the registration status.
+     */
+    regLastErrText: string;
     /**
      * Flag to tell whether this account is currently registered
      * (has active registration session).

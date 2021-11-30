@@ -1,4 +1,4 @@
-import { IAccount } from './Account'
+import { IAccount, IAccountConfig } from './Account'
 import { CallData, Orientation, PJSIPCallSettings, PJSIPMessageData, StartConfiguration } from './index'
 import { NativeModules } from 'react-native'
 
@@ -13,7 +13,7 @@ interface PjSipModuleInterface {
   }) => void) => void,
   stop: (callBack: (success: boolean) => void) => void,
   updateStunServers: (accountId: number, stunServerList: string[], callBack: (success: boolean) => void) => void;
-  createAccount: (config: IAccount, callBack: (success: boolean, account: IAccount) => void) => void;
+  createAccount: (config: IAccountConfig, callBack: (success: boolean, account: IAccount) => void) => void;
   registerAccount: (accountId: number, renew: boolean, callBack: (success: boolean, reason: string) => void) => void;
   deleteAccount: (accountId: number, callBack: (success: boolean) => void) => void;
   getAccounts: (callBack: (success: boolean, data: IAccount[]) => void) => void;

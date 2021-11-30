@@ -14,6 +14,16 @@ export default class AccountRegistration {
    */
 
   /**
+   * Last registration status code (SIP status codes according to RFC 3261).
+   * If status code is empty, the account is currently not registered. Any other value indicates the SIP
+   * status code of the registration.
+   */
+
+  /**
+   * String describing the registration status.
+   */
+
+  /**
    * Flag to tell whether this account is currently registered
    * (has active registration session).
    *
@@ -28,6 +38,8 @@ export default class AccountRegistration {
   constructor(props) {
     this.status = props.status;
     this.statusText = props.statusText;
+    this.regLastErr = props.regLastErr;
+    this.regLastErrText = props.regLastErrText;
     this.active = props.active;
     this.expires = props.expires;
   }

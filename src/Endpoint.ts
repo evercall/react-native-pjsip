@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 import PjSipModule from './PjSipModule'
 import Call, { CallData, PJSUACallFlags, PJSUAVideoReqKeyframeMethod } from './Call'
 import Message, { MessageData } from './Message'
-import Account, { IAccount, IAccountConfig } from './Account'
+import Account, { IAccount } from './Account'
 
 /**
  * @example { 'speex/8000': 1 }
@@ -116,53 +116,29 @@ export default class Endpoint extends EventEmitter {
    * Returns a Promise that will be resolved once PjSip module is initialized.
    * Do not call any function while library is not initialized.
    */
-  start (configuration: StartConfiguration): Promise<{
+  start = (configuration: StartConfiguration): Promise<{
     accounts: Account[],
     calls: Call[],
-  }> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.start(configuration, (successful, data) => {
-        if (successful) {
-          const accounts: Account[] = []
-          const calls: Call[] = []
+  }> =>
+    new Promise<{ accounts: Account[]; calls: Call[] }>(
+      (resolve, reject) =>
+        PjSipModule.start(configuration, (success, data) => (success) ?
+          {
+            accounts: data.accounts.map(account => new Account(account)),
+            calls: data.calls.map(call => new Call(call))
+          } : reject(configuration)
+        )
+    )
 
-          for (const d of data.accounts) {
-            accounts.push(new Account(d))
-          }
-
-          for (const e of data.calls) {
-            calls.push(new Call(e))
-          }
-
-          const extra = {}
-
-          for (const key in data) {
-            if (Object.prototype.hasOwnProperty.call(data, key) && key != 'accounts' && key != 'calls') {
-              extra[key] = data[key]
-            }
-          }
-
-          resolve({
-            accounts,
-            calls,
-            ...extra,
-          })
-        } else {
-          reject(data)
-        }
-      })
-    })
-  }
-
-  stop (): Promise<void> {
-    return new Promise((resolve) => {
+  stop = (): Promise<void> => {
+    return new Promise<void>((resolve) => {
       PjSipModule.stop(() => {})
       resolve()
     })
   }
 
-  updateStunServers (accountId: number, stunServerList: string[]): Promise<void> {
-    return new Promise((resolve) => {
+  updateStunServers = (accountId: number, stunServerList: string[]): Promise<void> => {
+    return new Promise<void>((resolve) => {
       PjSipModule.updateStunServers(accountId, stunServerList, () => {})
       resolve()
     })
@@ -173,264 +149,199 @@ export default class Endpoint extends EventEmitter {
    * SIP registration session with the SIP registrar server. This SIP registration session will be maintained
    * internally by the library, and application doesn't need to do anything to maintain the registration session.
    */
-  createAccount (configuration: IAccountConfig): Promise<Account> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.createAccount(configuration, (successful, data) => {
-        if (successful) {
-          resolve(new Account(<IAccount>data))
-        } else {
-          reject(data)
-        }
-      })
-    })
-  }
+  createAccount = (configuration: IAccount): Promise<Account> =>
+    new Promise<Account>(
+      (resolve, reject) => PjSipModule.createAccount(
+        configuration,
+        (success, account) => (success) ? resolve(new Account(account)) : reject(account)
+      )
+    )
 
   /**
    * Update registration or perform unregistration.
    * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
    * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
    */
-  registerAccount (account: IAccount, renew = true): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.registerAccount(account.id, renew, (successful, reason) => {
+  registerAccount = (accountId: number, renew = true): Promise<void> =>
+    new Promise((resolve, reject) => {
+      PjSipModule.registerAccount(accountId, renew, (successful, reason) => {
         if (successful) {
           resolve()
         } else {
-          reject(new Error(reason))
+          reject(reason)
         }
       })
     })
-  }
 
   /**
    * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
    */
-  deleteAccount (account: IAccount): Promise<void> {
-    return new Promise((resolve) => {
-      PjSipModule.deleteAccount(account.id, () => {})
+  deleteAccount = (accountId: number): Promise<void> =>
+    new Promise((resolve) => {
+      PjSipModule.deleteAccount(accountId, () => {})
       resolve()
     })
-  }
 
   /**
    * Gets list of all accounts
    */
-  getAccounts (): Promise<Account[]> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.getAccounts((successful, data) => {
-        if (successful) {
-          const accounts = []
-
-          for (const d of data) {
-            accounts.push(new Account(d))
-          }
-
-          resolve(accounts)
-        } else {
-          reject(data)
-        }
-      })
-    })
-  }
+  getAccounts = (): Promise<Account[]> =>
+    new Promise<Account[]>(
+      (resolve, reject) =>
+        PjSipModule.getAccounts((success, data) => (success) ?
+          resolve(data.map(account => new Account(account)))
+          : reject(data)
+        )
+    )
 
   /**
    * Gets an account by id
    */
-  getAccount (accountId: number): Promise<Account> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.getAccount(accountId, (successful, accountData) => {
-        if (successful) {
-          resolve(new Account(<IAccount>accountData))
-        } else {
-          reject(new Error(<string>accountData))
-        }
-      })
-    })
-  }
+  getAccount = (accountId: number): Promise<Account> =>
+    new Promise<Account>((resolve, reject) =>
+      PjSipModule.getAccount(accountId, (successful, accountData) => (successful) ?
+        resolve(new Account(accountData)) :
+        reject(accountData)
+      )
+    )
 
   /**
    * Gets list of all calls
    */
-  getCalls (): Promise<Call[]> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.getCalls((successful, data) => {
-        if (successful) {
-          const calls = []
-
-          for (const d of data) {
-            calls.push(new Call(d))
-          }
-
-          resolve(calls)
-        } else {
-          reject(data)
-        }
-      })
+  getCalls = (): Promise<Call[]> =>
+    new Promise<Call[]>((resolve, reject) => {
+      PjSipModule.getCalls((successful, data) => (successful) ?
+        resolve(data.map(call => new Call(call))) :
+        reject(data)
+      )
     })
-  }
 
   /**
    * Gets an account by id
    */
-  getCall (callId: number): Promise<Call> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.getCall(callId, (successful, callData) => {
-        if (successful) {
-          resolve(new Call(<CallData>callData))
-        } else {
-          reject(new Error(<string>callData))
-        }
-      })
+  getCall = (callId: number): Promise<Call> =>
+    new Promise<Call>((resolve, reject) => {
+      PjSipModule.getCall(callId, (successful, callData) => (successful) ?
+        resolve(new Call(callData)) :
+        reject(callData)
+      )
     })
-  }
 
   /**
    * Make an outgoing call to the specified URI.
    */
-  makeCall (account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call> {
-    destination = this._normalize(account, destination)
+  makeCall = (account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call> => {
+    destination = this._sipifyNumber(account, destination)
 
-    return new Promise((resolve, reject) => {
-      PjSipModule.makeCall(account.id, destination, callSettings, msgData, (successful, data) => {
-        if (successful) {
-          resolve(new Call(<CallData>data))
-        } else {
-          reject(data)
-        }
-      })
-    })
+    return new Promise<Call>((resolve, reject) =>
+      PjSipModule.makeCall(
+        account.id,
+        destination,
+        callSettings,
+        msgData,
+        (successful, data) => (successful) ? resolve(new Call(data)) : reject(data)
+      )
+    )
   }
 
   /**
    * Send response to incoming INVITE request.
    */
-  answerCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.answerCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  answerCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.answerCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
   /**
    * Hangup call by using method that is appropriate according to the call state.
    */
-  hangupCall (callId: number): Promise<void> {
+  hangupCall = (callId: number): Promise<void> =>
     // TODO: Add possibility to pass code and reason for hangup.
-    return new Promise((resolve, reject) => {
-      PjSipModule.hangupCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.hangupCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
   /**
    * Hangup call by using Decline (603) method.
    */
-  declineCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.declineCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  declineCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.declineCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
   /**
    * Put the specified call on hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is being put on hold.
    */
-  holdCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.holdCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  holdCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.holdCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
   /**
    * Release the specified call from hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is resumed.
    */
-  unholdCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.unholdCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  unholdCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.unholdCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
-  muteCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.muteCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  muteCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.muteCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
-  unMuteCall (callId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.unMuteCall(callId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  unMuteCall = (callId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.unMuteCall(callId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
-  useSpeaker (): Promise<void> {
-    return new Promise((resolve) => {
-      PjSipModule.useSpeaker(() => {})
-      resolve()
-    })
-  }
+  useSpeaker = (): Promise<void> =>
+    new Promise<void>((resolve) => {
+        PjSipModule.useSpeaker(() => {})
+        resolve()
+      }
+    )
 
-  useEarpiece (): Promise<void> {
-    return new Promise((resolve) => {
+  useEarpiece = (): Promise<void> =>
+    new Promise<void>((resolve) => {
       PjSipModule.useEarpiece(() => {})
       resolve()
     })
-  }
 
   /**
    * Initiate call transfer to the specified address.
    * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
    */
-  xferCall (account: IAccount, callId: number, destination: string): Promise<void> {
-    destination = this._normalize(account, destination)
+  xferCall = (account: IAccount, callId: number, destination: string): Promise<void> => {
+    destination = this._sipifyNumber(account, destination)
 
-    return new Promise((resolve, reject) => {
-      PjSipModule.xferCall(callId, destination, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
+    return new Promise<void>((resolve, reject) =>
+      PjSipModule.xferCall(callId, destination, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
   }
 
   /**
@@ -438,90 +349,70 @@ export default class Endpoint extends EventEmitter {
    * This function will send REFER request to instruct remote call party to initiate new INVITE session to the URL of destCall.
    * The party at destCall then should "replace" the call with us with the new call from the REFER recipient.
    */
-  xferReplacesCall (callId: number, destCallId: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.xferReplacesCall(callId, destCallId, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  xferReplacesCall = (callId: number, destCallId: number): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.xferReplacesCall(callId, destCallId, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
   /**
    * Redirect (forward) specified call to destination.
    * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
    */
-  redirectCall (account: IAccount, callId: number, destination: string): Promise<void> {
-    destination = this._normalize(account, destination)
+  redirectCall = (account: IAccount, callId: number, destination: string): Promise<void> => {
+    destination = this._sipifyNumber(account, destination)
 
-    return new Promise((resolve, reject) => {
-      PjSipModule.redirectCall(callId, destination, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
+    return new Promise<void>((resolve, reject) =>
+      PjSipModule.redirectCall(callId, destination, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
   }
 
   /**
    * Send DTMF digits to remote using RFC 2833 payload formats.
    */
-  dtmfCall (callId: number, digits: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.dtmfCall(callId, digits, (successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  dtmfCall = (callId: number, digits: string): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.dtmfCall(callId, digits, (successful, reason) => (successful) ?
+        resolve() :
+        reject(reason)
+      )
+    )
 
-  activateAudioSession (): Promise<void> {
-    return new Promise((resolve) => {
+  activateAudioSession = (): Promise<void> =>
+    new Promise<void>((resolve) => {
       PjSipModule.activateAudioSession(() => {})
       resolve()
     })
-  }
 
-  deactivateAudioSession (): Promise<void> {
-    return new Promise((resolve, reject) => {
-      PjSipModule.deactivateAudioSession((successful, reason) => {
-        if (successful) {
-          resolve()
-        } else {
-          reject(new Error(reason))
-        }
-      })
-    })
-  }
+  deactivateAudioSession = (): Promise<void> =>
+    new Promise<void>((resolve, reject) =>
+      PjSipModule.deactivateAudioSession((successful, reason) => (successful) ? resolve() :
+        reject(reason)
+      )
+    )
 
-  changeOrientation (orientation: Orientation): Promise<void> {
-    return new Promise((resolve) => {
+  changeOrientation = (orientation: Orientation): Promise<void> =>
+    new Promise<void>((resolve) => {
       PjSipModule.changeOrientation(orientation)
       resolve()
     })
-  }
 
-  changeCodecSettings (codecSettings: Object): Promise<void> {
-    return new Promise((resolve) => {
+  changeCodecSettings = (codecSettings: Object): Promise<void> =>
+    new Promise((resolve) => {
       PjSipModule.changeCodecSettings(codecSettings, () => {})
       resolve()
     })
-  }
 
   /**
    * @fires Endpoint#registration_changed
    * @private
    * @param data {Object}
-   */
-  _onRegistrationChanged (data: IAccount): void {
+   */_onRegistrationChanged = (data: IAccount): boolean =>
     /**
      * Fires when registration status has changed.
      *
@@ -529,14 +420,12 @@ export default class Endpoint extends EventEmitter {
      * @property {Account} account
      */
     this.emit('registration_changed', new Account(data))
-  }
 
   /**
    * @fires Endpoint#call_received
    * @private
    * @param data {Object}
-   */
-  _onCallReceived (data: CallData): void {
+   */_onCallReceived = (data: CallData): boolean =>
     /**
      * TODO
      *
@@ -544,14 +433,12 @@ export default class Endpoint extends EventEmitter {
      * @property {Call} call
      */
     this.emit('call_received', new Call(data))
-  }
 
   /**
    * @fires Endpoint#call_changed
    * @private
    * @param data {Object}
-   */
-  _onCallChanged (data: CallData): void {
+   */_onCallChanged = (data: CallData): boolean =>
     /**
      * TODO
      *
@@ -559,14 +446,12 @@ export default class Endpoint extends EventEmitter {
      * @property {Call} call
      */
     this.emit('call_changed', new Call(data))
-  }
 
   /**
    * @fires Endpoint#call_terminated
    * @private
    * @param data {Object}
-   */
-  _onCallTerminated (data: CallData): void {
+   */_onCallTerminated = (data: CallData): boolean =>
     /**
      * TODO
      *
@@ -574,14 +459,12 @@ export default class Endpoint extends EventEmitter {
      * @property {Call} call
      */
     this.emit('call_terminated', new Call(data))
-  }
 
   /**
    * @fires Endpoint#call_screen_locked
    * @private
    * @param lock bool
-   */
-  _onCallScreenLocked (lock: boolean): void {
+   */_onCallScreenLocked = (lock: boolean): boolean =>
     /**
      * TODO
      *
@@ -589,14 +472,12 @@ export default class Endpoint extends EventEmitter {
      * @property bool lock
      */
     this.emit('call_screen_locked', lock)
-  }
 
   /**
    * @fires Endpoint#message_received
    * @private
    * @param data {Object}
-   */
-  _onMessageReceived (data: MessageData): void {
+   */_onMessageReceived = (data: MessageData): boolean =>
     /**
      * TODO
      *
@@ -604,42 +485,31 @@ export default class Endpoint extends EventEmitter {
      * @property {Message} message
      */
     this.emit('message_received', new Message(data))
-  }
 
   /**
    * @fires Endpoint#connectivity_changed
    * @private
    * @param available bool
-   */
-  _onConnectivityChanged (available: boolean): void {
+   */_onConnectivityChanged = (available: boolean): boolean =>
     /**
      * @event Endpoint#connectivity_changed
      * @property bool available True if connectivity matches current Network settings, otherwise false.
      */
     this.emit('connectivity_changed', available)
-  }
 
   /**
-   * Normalize Destination URI
+   * Sipify number
    *
    * @param account
-   * @param destination {string}
+   * @param number {string}
    * @returns {string}
    * @private
    */
-  _normalize (account: IAccount, destination: string): string {
-    if (!destination.startsWith('sip:')) {
-      let realm = account.proxy
-
-      if (realm === null) {
-        realm = account.domain
-
-        destination = `sip:${destination}@${realm}`
-      }
-
-      return destination
-    }
-
-  }
+  _sipifyNumber = (account: IAccount, number: string): string =>
+    number.startsWith('sip:') ?
+      number :
+      (account.proxy !== null) ?
+        `sip:${number}@${account.proxy}` :
+        `sip:${number}@${account.domain}`
 
 }

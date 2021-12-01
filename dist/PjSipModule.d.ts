@@ -1,4 +1,4 @@
-import { IAccount, IAccountConfig } from './Account';
+import { IAccount } from './Account';
 import { CallData, Orientation, PJSIPCallSettings, PJSIPMessageData, StartConfiguration } from './index';
 interface PjSipModuleInterface {
     start: (config: StartConfiguration, callBack: (success: boolean, data: {
@@ -11,14 +11,14 @@ interface PjSipModuleInterface {
     }) => void) => void;
     stop: (callBack: (success: boolean) => void) => void;
     updateStunServers: (accountId: number, stunServerList: string[], callBack: (success: boolean) => void) => void;
-    createAccount: (config: IAccountConfig, callBack: (success: boolean, account: IAccount) => void) => void;
+    createAccount: (config: IAccount, callBack: (success: boolean, account: IAccount) => void) => void;
     registerAccount: (accountId: number, renew: boolean, callBack: (success: boolean, reason: string) => void) => void;
     deleteAccount: (accountId: number, callBack: (success: boolean) => void) => void;
     getAccounts: (callBack: (success: boolean, data: IAccount[]) => void) => void;
-    getAccount: (accountId: number, callBack: (success: boolean, data: IAccount | string) => void) => void;
+    getAccount: (accountId: number, callBack: (success: boolean, data: IAccount) => void) => void;
     getCalls: (callBack: (success: boolean, data: CallData[]) => void) => void;
-    getCall: (callId: number, callBack: (success: boolean, data: CallData | string) => void) => void;
-    makeCall: (accountId: number, destination: string, callSettings: PJSIPCallSettings, messageData: PJSIPMessageData, callBack: (success: boolean, data: CallData | string) => void) => void;
+    getCall: (callId: number, callBack: (success: boolean, data: CallData) => void) => void;
+    makeCall: (accountId: number, destination: string, callSettings: PJSIPCallSettings, messageData: PJSIPMessageData, callBack: (success: boolean, data: CallData) => void) => void;
     answerCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
     hangupCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
     declineCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;

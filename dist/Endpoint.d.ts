@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Call, { CallData, PJSUACallFlags, PJSUAVideoReqKeyframeMethod } from './Call';
 import { MessageData } from './Message';
-import Account, { IAccount, IAccountConfig } from './Account';
+import Account, { IAccount } from './Account';
 /**
  * @example { 'speex/8000': 1 }
  */
@@ -89,145 +89,138 @@ export default class Endpoint extends EventEmitter {
      * Returns a Promise that will be resolved once PjSip module is initialized.
      * Do not call any function while library is not initialized.
      */
-    start(configuration: StartConfiguration): Promise<{
+    start: (configuration: StartConfiguration) => Promise<{
         accounts: Account[];
         calls: Call[];
     }>;
-    stop(): Promise<void>;
-    updateStunServers(accountId: number, stunServerList: string[]): Promise<void>;
+    stop: () => Promise<void>;
+    updateStunServers: (accountId: number, stunServerList: string[]) => Promise<void>;
     /**
      * Add a new account. If registration is configured for this account, this function would also start the
      * SIP registration session with the SIP registrar server. This SIP registration session will be maintained
      * internally by the library, and application doesn't need to do anything to maintain the registration session.
      */
-    createAccount(configuration: IAccountConfig): Promise<Account>;
+    createAccount: (configuration: IAccount) => Promise<Account>;
     /**
      * Update registration or perform unregistration.
      * If registration is configured for this account, then initial SIP REGISTER will be sent when the account is added.
      * Application normally only need to call this function if it wants to manually update the registration or to unregister from the server.
      */
-    registerAccount(account: IAccount, renew?: boolean): Promise<void>;
+    registerAccount: (accountId: number, renew?: boolean) => Promise<void>;
     /**
      * Delete an account. This will unregister the account from the SIP server, if necessary, and terminate server side presence subscriptions associated with this account.
      */
-    deleteAccount(account: IAccount): Promise<void>;
+    deleteAccount: (accountId: number) => Promise<void>;
     /**
      * Gets list of all accounts
      */
-    getAccounts(): Promise<Account[]>;
+    getAccounts: () => Promise<Account[]>;
     /**
      * Gets an account by id
      */
-    getAccount(accountId: number): Promise<Account>;
+    getAccount: (accountId: number) => Promise<Account>;
     /**
      * Gets list of all calls
      */
-    getCalls(): Promise<Call[]>;
+    getCalls: () => Promise<Call[]>;
     /**
      * Gets an account by id
      */
-    getCall(callId: number): Promise<Call>;
+    getCall: (callId: number) => Promise<Call>;
     /**
      * Make an outgoing call to the specified URI.
      */
-    makeCall(account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<Call>;
+    makeCall: (account: IAccount, destination: string, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData) => Promise<Call>;
     /**
      * Send response to incoming INVITE request.
      */
-    answerCall(callId: number): Promise<void>;
+    answerCall: (callId: number) => Promise<void>;
     /**
      * Hangup call by using method that is appropriate according to the call state.
      */
-    hangupCall(callId: number): Promise<void>;
+    hangupCall: (callId: number) => Promise<void>;
     /**
      * Hangup call by using Decline (603) method.
      */
-    declineCall(callId: number): Promise<void>;
+    declineCall: (callId: number) => Promise<void>;
     /**
      * Put the specified call on hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is being put on hold.
      */
-    holdCall(callId: number): Promise<void>;
+    holdCall: (callId: number) => Promise<void>;
     /**
      * Release the specified call from hold. This will send re-INVITE with the appropriate SDP to inform remote that the call is resumed.
      */
-    unholdCall(callId: number): Promise<void>;
-    muteCall(callId: number): Promise<void>;
-    unMuteCall(callId: number): Promise<void>;
-    useSpeaker(): Promise<void>;
-    useEarpiece(): Promise<void>;
+    unholdCall: (callId: number) => Promise<void>;
+    muteCall: (callId: number) => Promise<void>;
+    unMuteCall: (callId: number) => Promise<void>;
+    useSpeaker: () => Promise<void>;
+    useEarpiece: () => Promise<void>;
     /**
      * Initiate call transfer to the specified address.
      * This function will send REFER request to instruct remote call party to initiate a new INVITE session to the specified destination/target.
      */
-    xferCall(account: IAccount, callId: number, destination: string): Promise<void>;
+    xferCall: (account: IAccount, callId: number, destination: string) => Promise<void>;
     /**
      * Initiate attended call transfer.
      * This function will send REFER request to instruct remote call party to initiate new INVITE session to the URL of destCall.
      * The party at destCall then should "replace" the call with us with the new call from the REFER recipient.
      */
-    xferReplacesCall(callId: number, destCallId: number): Promise<void>;
+    xferReplacesCall: (callId: number, destCallId: number) => Promise<void>;
     /**
      * Redirect (forward) specified call to destination.
      * This function will send response to INVITE to instruct remote call party to redirect incoming call to the specified destination/target.
      */
-    redirectCall(account: IAccount, callId: number, destination: string): Promise<void>;
+    redirectCall: (account: IAccount, callId: number, destination: string) => Promise<void>;
     /**
      * Send DTMF digits to remote using RFC 2833 payload formats.
      */
-    dtmfCall(callId: number, digits: string): Promise<void>;
-    activateAudioSession(): Promise<void>;
-    deactivateAudioSession(): Promise<void>;
-    changeOrientation(orientation: Orientation): Promise<void>;
-    changeCodecSettings(codecSettings: Object): Promise<void>;
+    dtmfCall: (callId: number, digits: string) => Promise<void>;
+    activateAudioSession: () => Promise<void>;
+    deactivateAudioSession: () => Promise<void>;
+    changeOrientation: (orientation: Orientation) => Promise<void>;
+    changeCodecSettings: (codecSettings: Object) => Promise<void>;
     /**
      * @fires Endpoint#registration_changed
      * @private
      * @param data {Object}
-     */
-    _onRegistrationChanged(data: IAccount): void;
+     */ _onRegistrationChanged: (data: IAccount) => boolean;
     /**
      * @fires Endpoint#call_received
      * @private
      * @param data {Object}
-     */
-    _onCallReceived(data: CallData): void;
+     */ _onCallReceived: (data: CallData) => boolean;
     /**
      * @fires Endpoint#call_changed
      * @private
      * @param data {Object}
-     */
-    _onCallChanged(data: CallData): void;
+     */ _onCallChanged: (data: CallData) => boolean;
     /**
      * @fires Endpoint#call_terminated
      * @private
      * @param data {Object}
-     */
-    _onCallTerminated(data: CallData): void;
+     */ _onCallTerminated: (data: CallData) => boolean;
     /**
      * @fires Endpoint#call_screen_locked
      * @private
      * @param lock bool
-     */
-    _onCallScreenLocked(lock: boolean): void;
+     */ _onCallScreenLocked: (lock: boolean) => boolean;
     /**
      * @fires Endpoint#message_received
      * @private
      * @param data {Object}
-     */
-    _onMessageReceived(data: MessageData): void;
+     */ _onMessageReceived: (data: MessageData) => boolean;
     /**
      * @fires Endpoint#connectivity_changed
      * @private
      * @param available bool
-     */
-    _onConnectivityChanged(available: boolean): void;
+     */ _onConnectivityChanged: (available: boolean) => boolean;
     /**
-     * Normalize Destination URI
+     * Sipify number
      *
      * @param account
-     * @param destination {string}
+     * @param number {string}
      * @returns {string}
      * @private
      */
-    _normalize(account: IAccount, destination: string): string;
+    _sipifyNumber: (account: IAccount, number: string) => string;
 }

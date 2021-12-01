@@ -14,5 +14,8 @@
       "error",
       "never"
     ]
-  }
+  },
+  "ignorePatterns": [
+    "dist"
+  ]
 }

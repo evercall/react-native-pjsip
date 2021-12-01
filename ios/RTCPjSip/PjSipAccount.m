@@ -180,6 +180,7 @@
         @"regTimeout": self.regTimeout,
         @"regContactParams": self.regContactParams,
         @"regHeaders": self.regHeaders,
+        @"regOnAdd": @(self.regOnAdd),
         @"registration": registration
     };
 }

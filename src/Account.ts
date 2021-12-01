@@ -672,6 +672,7 @@ export interface IAccount {
   contactUriParams?: string | null,
   regServer?: string | null,
   regTimeout?: number,
+  regOnAdd?: boolean,
   regContactParams?: string | null,
   regHeaders?: Object | null,
   registration?: IAccountRegistration
@@ -732,6 +733,7 @@ export default class Account implements IAccount {
    * Port specified in Endpoint.createAccount().
    */
   regTimeout: number | undefined
+  regOnAdd: boolean | undefined
   regContactParams: string | null | undefined
   regHeaders: Object | null | undefined
   /**
@@ -754,6 +756,7 @@ export default class Account implements IAccount {
     this.regTimeout = props.regTimeout
     this.regContactParams = props.regContactParams
     this.regHeaders = props.regHeaders
+    this.regOnAdd = props.regOnAdd
     this.registration = props.registration
   }
 }

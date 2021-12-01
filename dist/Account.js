@@ -71,6 +71,7 @@ export default class Account {
     this.regTimeout = props.regTimeout;
     this.regContactParams = props.regContactParams;
     this.regHeaders = props.regHeaders;
+    this.regOnAdd = props.regOnAdd;
     this.registration = props.registration;
   }
 

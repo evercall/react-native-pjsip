@@ -135,6 +135,24 @@ export default class Endpoint extends EventEmitter {
      * Send response to incoming INVITE request.
      */
     answerCall(callId: number): Promise<void>;
+
+    /**
+     * Send update SIP message
+     */
+    updateCall(callId: number): Promise<void>;
+
+    /**
+     * Send reinvite to perhaps update contact.
+     * @param callId
+     * @param callSettings
+     * @param msgData
+     */
+    reinviteCall(callId: number, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<void>;
+
+    /**
+     * Use this in IP change situations like IPv4 to new IPv4 address or IPv6 to IPv6.
+     */
+    handleIpChange(callId: number): Promise<void>;
     /**
      * Hangup call by using method that is appropriate according to the call state.
      */

@@ -4,6 +4,7 @@ import PjSipModule from './PjSipModule';
 import Call from './Call';
 import Message from './Message';
 import Account from './Account';
+import {PJSIPCallSettings, PJSIPMessageData} from "./Endpoint"
 /**
  * @example { 'speex/8000': 1 }
  */
@@ -227,6 +228,49 @@ export default class Endpoint extends EventEmitter {
       });
     });
   }
+
+  updateCall (callId) {
+    return new Promise((resolve, reject) => {
+      PjSipModule.updateCall(callId, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
+  reinviteCall (callId, callSettings, msgData) {
+    return new Promise((resolve, reject) => {
+      PjSipModule.reinviteCall(callId, callSettings, msgData, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
+  /**
+   * Call this to handle ip change situations, this will reinit media and new a reinvite
+   * @param callId
+   * @returns {Promise<unknown>}
+   */
+
+  handleIpChange (callId) {
+    return new Promise((resolve, reject) => {
+      PjSipModule.handleIpChange(callId, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
   /**
    * Send response to incoming INVITE request.
    */

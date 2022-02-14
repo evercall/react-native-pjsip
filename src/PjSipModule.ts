@@ -22,6 +22,9 @@ interface PjSipModuleInterface {
   getCall: (callId: number, callBack: (success: boolean, data: CallData | string) => void) => void;
   makeCall: (accountId: number, destination: string, callSettings: PJSIPCallSettings, messageData: PJSIPMessageData, callBack: (success: boolean, data: CallData | string) => void) => void;
   answerCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
+  updateCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
+  reinviteCall: (callId: number, callSettings: PJSIPCallSettings, msgData: PJSIPMessageData, callBack: (success: boolean, reason: string) => void) => void;
+  handleIpChange: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
   hangupCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
   declineCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;
   holdCall: (callId: number, callBack: (success: boolean, reason: string) => void) => void;

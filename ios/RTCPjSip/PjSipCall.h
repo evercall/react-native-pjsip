@@ -12,6 +12,9 @@
 - (void)hangup;
 - (void)decline;
 - (void)answer;
+- (void)update;
+- (void)reinvite:(NSDictionary *)callSettingsDict msgData:(NSDictionary *)msgDataDict;
+- (void)handleIpChange;
 - (void)hold;
 - (void)unhold;
 - (void)mute;

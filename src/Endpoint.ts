@@ -316,6 +316,42 @@ export default class Endpoint extends EventEmitter {
     })
   }
 
+  updateCall (callId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      PjSipModule.updateCall(callId, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
+  reinviteCall (callId: number, callSettings?: PJSIPCallSettings, msgData?: PJSIPMessageData): Promise<void> {
+    return new Promise((resolve, reject) => {
+      PjSipModule.reinviteCall(callId, callSettings, msgData, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
+  handleIpChange (callId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      PjSipModule.handleIpChange(callId, (successful, reason) => {
+        if (successful) {
+          resolve()
+        } else {
+          reject(new Error(reason))
+        }
+      })
+    })
+  }
+
   /**
    * Hangup call by using method that is appropriate according to the call state.
    */

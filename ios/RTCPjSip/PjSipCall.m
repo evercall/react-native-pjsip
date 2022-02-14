@@ -53,6 +53,38 @@
     pjsua_call_answer2(self.id, &callOpt, 200, NULL, &msgData);
 }
 
+- (void)update {
+    pjsua_msg_data msgData;
+    pjsua_msg_data_init(&msgData);
+    pjsua_call_setting  callOpt;
+    pjsua_call_setting_default(&callOpt);
+
+    pjsua_call_update2(self.id, &callOpt, &msgData);
+}
+
+- (void)reinvite:(NSDictionary *)callSettingsDict msgData:(NSDictionary *)msgDataDict {
+    pjsua_call_setting callSettings;
+    [PjSipUtil fillCallSettings:&callSettings dict:callSettingsDict];
+
+    pj_caching_pool cp;
+    pj_pool_t *pool;
+
+    pj_caching_pool_init(&cp, &pj_pool_factory_default_policy, 0);
+    pool = pj_pool_create(&cp.factory, "header", 1000, 1000, NULL);
+
+    pjsua_msg_data msgData;
+    pjsua_msg_data_init(&msgData);
+    [PjSipUtil fillMsgData:&msgData dict:msgDataDict pool:pool];
+
+    pjsua_call_reinvite2(self.id, &callSettings, &msgData);
+}
+
+- (void)handleIpChange {
+    pjsua_ip_change_param param;
+    pjsua_ip_change_param_default(&param);
+    pjsua_handle_ip_change(&param);
+}
+
 - (void)hold {
     if (self.isHeld) {
         return;

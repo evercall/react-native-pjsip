@@ -164,6 +164,46 @@ RCT_EXPORT_METHOD(answerCall: (int) callId callback:(RCTResponseSenderBlock) cal
     }
 }
 
+RCT_EXPORT_METHOD(updateCall: (int) callId callback:(RCTResponseSenderBlock) callback) {
+    PjSipEndpoint* endpoint = [PjSipEndpoint instance];
+    PjSipCall *call = [endpoint findCall:callId];
+
+    if (call) {
+        [call update];
+
+        callback(@[@TRUE]);
+    } else {
+        callback(@[@FALSE, @"Call not found"]);
+    }
+}
+
+RCT_EXPORT_METHOD(reinviteCall: (int) callId callSettings:(NSDictionary*) callSettings msgData:(NSDictionary*) msgData callback:(RCTResponseSenderBlock) callback) {
+    PjSipEndpoint* endpoint = [PjSipEndpoint instance];
+    PjSipCall *call = [endpoint findCall:callId];
+
+
+    if (call) {
+        [call reinvite:callSettings msgData:msgData];
+
+        callback(@[@TRUE]);
+    } else {
+        callback(@[@FALSE, @"Call not found"]);
+    }
+}
+
+RCT_EXPORT_METHOD(handleIpChange: (int) callId callback:(RCTResponseSenderBlock) callback) {
+    PjSipEndpoint* endpoint = [PjSipEndpoint instance];
+    PjSipCall *call = [endpoint findCall:callId];
+
+    if (call) {
+        [call handleIpChange];
+
+        callback(@[@TRUE]);
+    } else {
+        callback(@[@FALSE, @"Call not found"]);
+    }
+}
+
 RCT_EXPORT_METHOD(holdCall: (int) callId callback:(RCTResponseSenderBlock) callback) {
     PjSipEndpoint* endpoint = [PjSipEndpoint instance];
     PjSipCall *call = [endpoint findCall:callId];

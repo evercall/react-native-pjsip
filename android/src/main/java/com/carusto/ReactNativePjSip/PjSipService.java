@@ -41,6 +41,7 @@ import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.CallOpParam;
 import org.pjsip.pjsua2.CallSetting;
 import org.pjsip.pjsua2.Endpoint;
+import org.pjsip.pjsua2.IpChangeParam;
 import org.pjsip.pjsua2.EpConfig;
 import org.pjsip.pjsua2.OnCallStateParam;
 import org.pjsip.pjsua2.OnRegStateParam;
@@ -415,12 +416,12 @@ public class PjSipService extends Service {
                 break;
 
             // Call actions
-            case PjActions.ACTION_GET_CALLS:
-			    handleGetCalls(intent);
-			    break;
-            case PjActions.ACTION_GET_Call:
+            /*case PjActions.ACTION_GET_CALLS:
+                handleGetCalls(intent);
+                break;*/
+            /*case PjActions.ACTION_GET_CALL:
                 handleGetCall(intent);
-                break;
+                break;*/
             case PjActions.ACTION_MAKE_CALL:
                 handleCallMake(intent);
                 break;
@@ -432,6 +433,15 @@ public class PjSipService extends Service {
                 break;
             case PjActions.ACTION_ANSWER_CALL:
                 handleCallAnswer(intent);
+                break;
+            case PjActions.ACTION_REINVITE_CALL:
+                handleCallReinvite(intent);
+                break;
+            case PjActions.ACTION_UPDATE_CALL:
+                handleCallUpdate(intent);
+                break;
+            case PjActions.ACTION_IP_CHANGE:
+                handleIpChange(intent);
                 break;
             case PjActions.ACTION_HOLD_CALL:
                 handleCallSetOnHold(intent);
@@ -592,7 +602,7 @@ public class PjSipService extends Service {
         }
     }
 
-    private void handleGetCall(Intent intent) {
+    /*private void handleGetCall(Intent intent) {
         try {
             int callId = intent.getIntExtra("call_id", -1);
             PjSipCall call = findCall(callId);
@@ -608,15 +618,15 @@ public class PjSipService extends Service {
         } catch (Exception e) {
             mEmitter.fireIntentHandled(intent, e);
         }
-    }
+    }*/
 
-	private void handleGetCalls(Intent intent) {
+	/*private void handleGetCalls(Intent intent) {
         try {
             mEmitter.fireCallsRetrieved(intent, mCalls);
         } catch (Exception e) {
             mEmitter.fireIntentHandled(intent, e);
         }
-    }
+    }*/
 
     private PjSipAccount doAccountCreate(AccountConfigurationDTO configuration) throws Exception {
         AccountConfig cfg = new AccountConfig();
@@ -845,6 +855,49 @@ public class PjSipService extends Service {
             doPauseParallelCalls(call);
 
             mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallUpdate(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            CallOpParam prm = new CallOpParam();
+            call.update(prm);
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallReinvite(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            CallOpParam prm = new CallOpParam();
+            call.reinvite(prm);
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleIpChange(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            PjSipCall call = findCall(callId);
+            IpChangeParam prm = new IpChangeParam();
+
+            mEndpoint.handleIpChange(prm);
         } catch (Exception e) {
             mEmitter.fireIntentHandled(intent, e);
         }

@@ -29,10 +29,15 @@ public class PjActions {
     public static final String ACTION_DELETE_ACCOUNT = "account_delete";
     public static final String ACTION_GET_ACCOUNT = "account_get";
     public static final String ACTION_GET_ACCOUNTS = "accounts_get";
+    public static final String ACTION_GET_CALL = "call_get";
+    public static final String ACTION_GET_CALLS = "call_get";
     public static final String ACTION_MAKE_CALL = "call_make";
     public static final String ACTION_HANGUP_CALL = "call_hangup";
     public static final String ACTION_DECLINE_CALL = "call_decline";
     public static final String ACTION_ANSWER_CALL = "call_answer";
+    public static final String ACTION_UPDATE_CALL = "call_update2";
+    public static final String ACTION_REINVITE_CALL = "call_reinvite2";
+    public static final String ACTION_IP_CHANGE = "handle_ip_change";
     public static final String ACTION_HOLD_CALL = "call_hold";
     public static final String ACTION_UNHOLD_CALL = "call_unhold";
     public static final String ACTION_MUTE_CALL = "call_mute";
@@ -132,11 +137,10 @@ public class PjActions {
         return intent;
     }
 
-    public static Intent createGetAccountIntent(int callbackId, int accountId, Context context) {
+    public static Intent createGetCallIntent(int callbackId, int accountId, Context context) {
             Intent intent = new Intent(context, PjSipService.class);
             intent.setAction(PjActions.ACTION_GET_CALL);
             intent.putExtra("callback_id", callbackId);
-            intent.putExtra("call_id", callId);
 
             return intent;
         }
@@ -189,6 +193,33 @@ public class PjActions {
     public static Intent createAnswerCallIntent(int callbackId, int callId, Context context) {
         Intent intent = new Intent(context, PjSipService.class);
         intent.setAction(PjActions.ACTION_ANSWER_CALL);
+        intent.putExtra("callback_id", callbackId);
+        intent.putExtra("call_id", callId);
+
+        return intent;
+    }
+
+    public static Intent createUpdateCallIntent(int callbackId, int callId, Context context) {
+        Intent intent = new Intent(context, PjSipService.class);
+        intent.setAction(PjActions.ACTION_UPDATE_CALL);
+        intent.putExtra("callback_id", callbackId);
+        intent.putExtra("call_id", callId);
+
+        return intent;
+    }
+
+    public static Intent createReinviteCallIntent(int callbackId, int callId, Context context) {
+        Intent intent = new Intent(context, PjSipService.class);
+        intent.setAction(PjActions.ACTION_REINVITE_CALL);
+        intent.putExtra("callback_id", callbackId);
+        intent.putExtra("call_id", callId);
+
+        return intent;
+    }
+
+    public static Intent createIPChangeIntent(int callbackId, int callId, Context context) {
+        Intent intent = new Intent(context, PjSipService.class);
+        intent.setAction(PjActions.ACTION_IP_CHANGE);
         intent.putExtra("callback_id", callbackId);
         intent.putExtra("call_id", callId);
 
